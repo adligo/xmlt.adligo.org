@@ -85,7 +85,7 @@ public class TemplateParserEngine {
           addParamStuff("" ,params, sb,(ParamTagElement) te);
       }
     }
-    return sb.toString();
+    return sb.toString().trim();
   }
 
   static private void addParamStuff(String sNestedSeparator, I_TemplateParams params,
