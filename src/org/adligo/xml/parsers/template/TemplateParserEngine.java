@@ -12,7 +12,7 @@ package org.adligo.xml.parsers.template;
  */
 import org.adligo.xml.parsers.Parser;
 import java.lang.StringIndexOutOfBoundsException;
-import org.adligo.i.provider.I_TemplateParams;
+import org.adligo.i.persistence.I_TemplateParams;
 
 public class TemplateParserEngine {
 

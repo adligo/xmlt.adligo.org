@@ -10,7 +10,7 @@ package org.adligo.xml;
 import java.lang.reflect.*;
 import java.util.Vector;
 import org.adligo.xml.parsers.Parser;
-import org.adligo.i.provider.I_XML_Serilizable;
+import org.adligo.i.persistence.I_XML_Serilizable;
 
 public class XMLObject {
   public static final String XML_OBJECT_VERSION = new String("1.0");

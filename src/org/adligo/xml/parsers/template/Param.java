@@ -11,7 +11,7 @@ package org.adligo.xml.parsers.template;
 import java.util.Vector;
 import org.adligo.xml.XMLObject;
 import org.adligo.xml.parsers.Parser;
-import org.adligo.i.provider.I_TemplateParams;
+import org.adligo.i.persistence.I_TemplateParams;
 
 public class Param implements I_TemplateParams {
   public static final String CLASS_VERSION = new String("1.4");

@@ -15,9 +15,9 @@ import java.util.Vector;
 import org.adligo.xml.*;
 import java.lang.reflect.*;
 import org.adligo.xml.parsers.Parser;
-import org.adligo.i.provider.I_TemplateParams;
-import org.adligo.i.provider.I_MultipleParamsObject;
-import org.adligo.i.provider.I_XML_Serilizable;
+import org.adligo.i.persistence.I_TemplateParams;
+import org.adligo.i.persistence.I_MultipleParamsObject;
+import org.adligo.i.persistence.I_XML_Serilizable;
 
 public class Params implements  I_MultipleParamsObject {
   public static final String CLASS_VERSION = new String("1.4");
