@@ -41,15 +41,41 @@ public class ParamTagElement extends TemplateElement {
       setNestedSeparator(Parser.getAttributeValue(sTagHeader, Tags.NESTED_SEPARATOR));
     }
       /**
+       * this adds the contense of a string that does not have a param tag
+       * inside of it
        * @todo start with this
        * then finish the parseTag code
        * then rewrite the TemplateParserEngine
        */
     private void addNonParamString(String s) {
+      int [] iTagIndexes= Parser.getTagIndexs(s, Tags.PARAM_HEADER, ">");
+      if (iTagIndexes[0] == -1) {
+          addNonParamNonOptString(s);
+      } else {
 
-
+      }
 
     }
+    /**
+     * this adds the contese of a string with only a value tag
+     * and no other tags
+     */
+    private void addNonParamNonOptString(String s) {
+      if (log.isDebugEnabled()) {
+        log.debug("addNonParamNonOptString(" + s + ")");
+      }
+      int iTagIndex = s.indexOf(Tags.VALUE);
+      if (iTagIndex == -1) {
+          vElements.add(s);
+      } else {
+         // add the string before the value tag and the value tag and then
+         // recurse into this method (there could be more than one value tag)
+         vElements.add(TemplateElement.NewTemplateElement(s.substring(0, iTagIndex)));
+         vElements.add(TemplateElement.NewTemplateElement(ElementTypes.VALUE_TAG));
+         addNonParamNonOptString(s.substring(iTagIndex + Tags.VALUE.length(), s.length()));
+      }
+    }
+
     void parseTag(String s) {
       int iEndParamAfterParse = 0;
 
