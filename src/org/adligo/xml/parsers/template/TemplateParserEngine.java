@@ -122,12 +122,14 @@ public class TemplateParserEngine {
                   break;
               case ElementTypes.OPT_TAG:
                   int [] iaOptions = params.getOptions();
-                  OptTagElement ote = (OptTagElement) te_nested;
-                  for (int oi = 0; oi < iaOptions.length; oi++) {
-                    if (iaOptions[oi] == ote.getId()) {
-                      sb.append(ote.getStringValue());
-                    }
-                  }
+              	  if (iaOptions != null) {
+	                  OptTagElement ote = (OptTagElement) te_nested;
+	                  for (int oi = 0; oi < iaOptions.length; oi++) {
+	                    if (iaOptions[oi] == ote.getId()) {
+	                      sb.append(ote.getStringValue());
+	                    }
+	                  }
+              	  }
                   break;
               case ElementTypes.PARAM_TAG:
                   if (bFirstParam == true) {
