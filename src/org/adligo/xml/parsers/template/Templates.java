@@ -163,8 +163,10 @@ public class Templates {
         return new String(((String[]) vTemplates.elementAt(i))[1]);
       }
     }
-    System.out.println("org.adligo.xml.parsers.template.Templates \n " +
+    if (log.isWarnEnabled()) {
+      log.warn("\n\n org.adligo.xml.parsers.template.Templates \n " +
             "could not find a template for " + sName);
+    }
     return null;
   }
 
