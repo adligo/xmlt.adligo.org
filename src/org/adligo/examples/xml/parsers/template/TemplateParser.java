@@ -14,6 +14,7 @@ package org.adligo.examples.xml.parsers.template;
 import javax.swing.*;
 import org.adligo.xml.parsers.template.*;
 import org.adligo.examples.xml.parsers.*;
+import org.adligo.xml.params.*;
 import java.io.*;
 import java.awt.*;
 
@@ -30,7 +31,7 @@ public class TemplateParser extends JApplet {
   /**Initialize the applet*/
   public void init() {
     try {
-      jbInit();
+      jbInit2();
     }
     catch(Exception e) {
       e.printStackTrace();
@@ -38,6 +39,37 @@ public class TemplateParser extends JApplet {
   }
   /**Component initialization*/
   private void jbInit() throws Exception {
+    File f = new File(".");
+    loadDirectory = f.getAbsolutePath();
+    loadDirectory = loadDirectory.substring(0,loadDirectory.length() - 1);
+    sFile = loadDirectory + "xml" + System.getProperty("file.separator") + sFile;
+    templates.parseFile(sFile);
+    System.out.print(sFile + "  <template name=persons> = ");
+    System.out.println(templates.getTemplate("persons"));
+    Params params = new Params();
+    Params whereArgs = new Params();
+    whereArgs.addParam("oid",new String [] {"1","2"}, null);
+    whereArgs.addParam("fname",new String [] {"'joe'"}, null);
+    whereArgs.addParam("fname",new String [] {"'bob'"}, null);
+    Param where = new Param("where", new String [] {}, whereArgs);
+    params.addParam(where);
+    JTextArea ta = new JTextArea();
+    String s = TemplateParserEngine.parse(templates.getTemplate("persons"), params);
+    taComments.setMinimumSize(new Dimension(68, 103));
+    taComments.setPreferredSize(new Dimension(68, 103));
+    taComments.setLineWrap(true);
+    taComments.setWrapStyleWord(true);
+    taComments.setText("Below is the parsed template, the template was printed to the console. \n" +
+      "If you are using JBuilder 5 you will want to check out org.adligo.xml.parsers.template.DataSetParams and " +
+      " org.adligo.xml.parsers.template.DataSetRowParams (both are in db_xmlt.jar).  Both of these classes are ways to use a DataSet as the object " +
+      " that holds the parsing information (I_TemplateParams)."
+    );
+    this.getContentPane().add(jScrollPane1, BorderLayout.CENTER);
+    this.getContentPane().add(taComments, BorderLayout.NORTH);
+    jScrollPane1.getViewport().add(ta, null);
+    ta.setText(s);
+  }
+  private void jbInit2() throws Exception {
     File f = new File(".");
     loadDirectory = f.getAbsolutePath();
     loadDirectory = loadDirectory.substring(0,loadDirectory.length() - 1);

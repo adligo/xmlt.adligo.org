@@ -31,6 +31,9 @@ public class Template {
    * @param String sXML = the xml to be parsed into the object
    */
   public Template(String sXML) {
+    if (log.isDebugEnabled()) {
+        log.debug("parseing xml template \n" + sXML);
+    }
     parseInternal(sXML);
   }
 
@@ -39,6 +42,7 @@ public class Template {
 
     if (s == null) {
       log.warn("The string argument passed to Template.parseInternal was null");
+      return;
     }
 
     int [] iTagIndexes= Parser.getTagIndexs(s, Tags.PARAM_HEADER, ">");

@@ -40,17 +40,16 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Vector;
+import java.util.HashMap;
 import org.adligo.xml.parsers.Parser;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 
 public class Templates {
-  Log log = LogFactory.getLog(this.getClass());
+  Log log = LogFactory.getLog(Templates.class);
   String name = new String(""); //used to manage several of these objects
-  Vector vTemplates  = new Vector(); // A vector of String []s where
-                    //  [0] is the template name
-                    //  [1] is the content of the template
+  private HashMap templates = new HashMap();
 
   /**
    * Default Constructor
@@ -130,22 +129,19 @@ public class Templates {
    * [1] is the content of the template
    */
   private void parseContent(String content) {
-    //System.out.println("the content is \n" + content);
-    String[] template = new String[2];
     int headerStart,headerEnd,closerStart,closerEnd;
 
     headerStart = content.indexOf(Tags.TEMPLATE_HEADER);
     headerEnd = content.indexOf(">", headerStart);
-    template[0] = Parser.getAttributeValue(content.substring(headerStart,headerEnd),
+    String sName = Parser.getAttributeValue(content.substring(headerStart,headerEnd),
             Tags.NAME);
 
     closerStart = content.indexOf(Tags.TEMPLATE_ENDER);
     closerEnd = closerStart + Tags.TEMPLATE_ENDER.length();
-
-    template[1] = content.substring(headerEnd + 1, closerStart );
+    Template template = new Template(content.substring(headerEnd + 1, closerStart ));
     //delete the template that was parsed from the content string
     content = content.substring(closerEnd);
-    vTemplates.add(template);
+    templates.put(sName, template);
     if (content.indexOf(Tags.TEMPLATE_HEADER) != -1) {
       parseContent(content); // recursion
     }
@@ -155,39 +151,22 @@ public class Templates {
    * This returns the first template string for a template who's
    * name was pased in.
    */
-  public String getTemplate(String sName) {
-    int iCount = vTemplates.size();
-
-    for (int i = 0; iCount > i; i++) {
-      if(((String[]) vTemplates.elementAt(i))[0].equals(sName)) {
-        return new String(((String[]) vTemplates.elementAt(i))[1]);
-      }
-    }
-    if (log.isWarnEnabled()) {
-      log.warn("\n\n org.adligo.xml.parsers.template.Templates \n " +
-            "could not find a template for " + sName);
-    }
-    return null;
+  public Template getTemplate(String sName) {
+    return (Template) templates.get(sName);
   }
 
   /**
    * This adds a template to the object.
    */
-  public void addTemplate(String sName, String sTemplate) {
-    vTemplates.addElement(new String[] {sName, sTemplate});
+  public void addTemplate(String sName, Template template) {
+    templates.put(sName, template);
   }
 
   /**
    * This removes a template to the object.
    */
-  public void removeTemplate(String sTemplate) {
-    int iCount = vTemplates.size();
-
-    for (int i = 0; iCount > i; i++) {
-      if ( (((String []) vTemplates.elementAt(i))[0]).equals(sTemplate)) {
-        vTemplates.remove(i);
-      }
-    }
+  public void removeTemplate(Template template) {
+    templates.remove(template);
   }
 
   public void setName(String s) { name = s;}

@@ -14,8 +14,22 @@ import org.adligo.xml.parsers.Parser;
 import java.lang.StringIndexOutOfBoundsException;
 import org.adligo.i.persistence.I_TemplateParams;
 
-public class TemplateParserEngine {
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
+public class TemplateParserEngine {
+  Log log = LogFactory.getLog(TemplateParserEngine.class);
+
+  static public String parse(Template template, I_TemplateParams params)   {
+
+    String r = parseInternal2(template, params, null, false);
+    //System.out.println("parse returns \n" + r);
+    return r;
+  }
+
+  /**
+   * @deprecated use Template I_TemplateParams
+   */
   static public String parse(String s, I_TemplateParams params)   {
 
     String r = parseInternal(s, params, null, false);
@@ -156,6 +170,14 @@ public class TemplateParserEngine {
       sReturn = parseInternal(sReturn, params, psNestedSeperator, bSendNestSep);
     }
     return sReturn;
+  }
+
+  static private String parseInternal2(Template template, I_TemplateParams params, String psNestedSeperator,
+  boolean pbNestSep) {
+
+
+
+    return "";
   }
 
   static public String getReplacementForTag(String tag, String delimiter, String [] values, int [] options) {
