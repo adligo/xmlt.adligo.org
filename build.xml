@@ -31,6 +31,15 @@
   </target>
 
   <target name="sign" depends="jar">
+  	<java fork="true" classpath="${proguard}" classname="proguard.ProGuard">
+  	  	  	  	  	  	  	 	<arg line="-libraryjars ${user_jar_destination}"/>
+  	  	  	  	  	  	  	 	<arg line="-injars ${user_jar_destination}${buildname}.jar"/>
+  	  	  	  	  	  	  	 	<arg line="-outjar ${user_jar_destination}${buildname}New.jar"/>
+  	  	  	  	  	  	  	 	<arg line="-keep 'public class * extends java.lang.Object'"/>
+  	  	  	  	  		        <arg line="-dontobfuscate"/>
+  	  	  	  	  	  	  	 	<arg line="-printseeds"/>
+  	  	  	</java>
+  	  	  	<move file="${user_jar_destination}${buildname}New.jar" tofile="${me}"/>
     <signjar alias="${user_keyname}" keystore="${user_keystore}" jar="${me}"
           storepass="${user_storepass}"
           keypass="${user_keypass}"
