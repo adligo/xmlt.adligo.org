@@ -40,6 +40,8 @@
     <property category="archiving" name="targetCompressed" value="1" />
     <property category="archiving" name="targetPath" value="C%|/cygwin/home/scott/Adligo_Jars/relese_canidates/xmlt.jar" />
   </node>
+  <file path="build.properties" />
+  <file path="build.xml" />
   <file path="xml/PersonsSQL.xml" />
   <file path="src/org/adligo/xml/parsers/template/template.dtd" />
 </project>
