@@ -18,11 +18,17 @@ public class TemplateElement {
   public TemplateElement() {}
 
   protected void setStringValue(String s) {
-    sStringValue = s;
+    sStringValue = new String(s);
   }
 
   public int getType() { return iType; }
-  public String getStringValue() { return sStringValue; }
+  public String getStringValue() {
+    if (iType == ElementTypes.VALUE_TAG) {
+      return Tags.VALUE;
+    }
+    return sStringValue;
+  }
+  public String toString() { return getStringValue(); }
   void setType(int i) { iType = i; }
 
   public static TemplateElement NewTemplateElement(String s) {

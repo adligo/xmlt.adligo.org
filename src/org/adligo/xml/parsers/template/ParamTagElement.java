@@ -25,14 +25,42 @@ public class ParamTagElement extends TemplateElement {
     String sNestedSeparator = "";
     Vector vElements  = new Vector(); // A vector of String elements
                                     // and ParamTag (nestedTemplateobject) elements
+    /**
+     * This method should take a complete param tag like
+     * <param name="maxrows"> TOP <value/> </param>
+     *
+     * or one with nested stuff like
+     * <param name="where" nested_separator=" AND "> WHERE
+     *     <param name="oid" delimiter="," > oid IN (<value/>) </param>
+     * </param>
+     *
+     * and build the object out of it
+     */
+    public ParamTagElement(String s) {
+      if (log.isDebugEnabled()) {
+        log.debug("entering parseTag '" + s + "'");
+      }
+      int [] iTagHeaderIndexes= Parser.getTagIndexs(s, Tags.PARAM_HEADER, ">");
+      this.parseTagHeader(s.substring(0, iTagHeaderIndexes[1]));
+      this.parseInternal(s.substring(iTagHeaderIndexes[1], s.length() - Tags.PARAM_ENDER.length()));
 
-    void setName(String s) { sName = s; }
-    void setPre(String s) { sPre = s; }
-    void setPost(String s) { sPost = s; }
-    void setDelimiter(String s) { sDelimiter = s; }
-    void setSeparator(String s) { sSeparator = s; }
-    void setNestedSeparator(String s) { sNestedSeparator = s; }
-    void parseTagHeader(String sTagHeader) {
+    }
+    void setName(String s) { sName = nonNull(s); }
+    void setPre(String s) { sPre = nonNull(s); }
+    void setPost(String s) { sPost = nonNull(s); }
+    void setDelimiter(String s) {  sDelimiter = nonNull(s); }
+    void setSeparator(String s) { sSeparator = nonNull(s); }
+    void setNestedSeparator(String s) { sNestedSeparator = nonNull(s); }
+    String nonNull(String s) {
+      if (s == null) {
+        return "";
+      }
+      return s;
+    }
+    private void parseTagHeader(String sTagHeader) {
+      if (log.isDebugEnabled()) {
+        log.debug("entering parseTagHeader '" + sTagHeader + "'");
+      }
       setName(Parser.getAttributeValue(sTagHeader, Tags.NAME));
       setPre(Parser.getAttributeValue(sTagHeader, Tags.PRE));
       setPost( Parser.getAttributeValue(sTagHeader, Tags.POST));
@@ -48,68 +76,139 @@ public class ParamTagElement extends TemplateElement {
        * then rewrite the TemplateParserEngine
        */
     private void addNonParamString(String s) {
-      int [] iTagIndexes= Parser.getTagIndexs(s, Tags.PARAM_HEADER, ">");
-      if (iTagIndexes[0] == -1) {
-          addNonParamNonOptString(s);
-      } else {
-
+      if (s.length() == 0) {
+        return;
+      }
+      int [] iOptTagIndexes= Parser.getTagIndexs(s, Tags.OPT_HEADER, Tags.OPT_ENDER);
+      int iValueTagIndex = s.indexOf(Tags.VALUE);
+      if (iOptTagIndexes[0] == -1 && iValueTagIndex == -1) {
+          // just a string
+          vElements.add(TemplateElement.NewTemplateElement(s));
+          return;
       }
 
+      // add the string before the first tag and the first tag and then recurse untill
+      // s.length = 0
+      if (iOptTagIndexes[0] != -1 && iValueTagIndex != -1) {
+        // there is a opt tag and a value tag
+        if (iOptTagIndexes[0] > iValueTagIndex) {
+          // value tag is first so add that
+          addPreStringAndValueTag(iValueTagIndex, s);
+          return;
+        } else {
+          // opt tag is before value tag
+          addPreStringAndOptTag(iOptTagIndexes, s);
+          return;
+        }
+      }
+
+      // Ok that ends the value and opt tag condition
+      // If there is only a value tag
+      if (iValueTagIndex != -1) {
+          addPreStringAndValueTag(iValueTagIndex, s);
+          return;
+      }
+      if (iOptTagIndexes[0] != -1) {
+          addPreStringAndOptTag(iOptTagIndexes, s);
+          return;
+      }
     }
-    /**
-     * this adds the contese of a string with only a value tag
-     * and no other tags
+    private void addPreStringAndOptTag(int [] iOptTagIndexes, String s) {
+        if (iOptTagIndexes[0] != 0) {
+          vElements.add(TemplateElement.NewTemplateElement(s.substring(0, iOptTagIndexes[0])));
+        }
+        vElements.add(new OptTagElement(s.substring(iOptTagIndexes[0], iOptTagIndexes[1])));
+        addNonParamString(s.substring(iOptTagIndexes[1], s.length()));
+    }
+
+    private void addPreStringAndValueTag(int iValueTagIndex, String s) {
+        if (iValueTagIndex != 0) {
+          vElements.add(TemplateElement.NewTemplateElement(s.substring(0, iValueTagIndex)));
+        }
+        vElements.add(TemplateElement.NewTemplateElement(ElementTypes.VALUE_TAG));
+        addNonParamString(s.substring(iValueTagIndex + Tags.VALUE.length(), s.length()));
+    }
+
+
+    public int getElementCount() { return vElements.size(); }
+    /** this is the recursive method that finds internal param tags and deals with them
+     *
      */
-    private void addNonParamNonOptString(String s) {
+    private void parseInternal(String s) {
       if (log.isDebugEnabled()) {
-        log.debug("addNonParamNonOptString(" + s + ")");
+        log.debug("entering parseInternal '" + s + "'");
       }
-      int iTagIndex = s.indexOf(Tags.VALUE);
-      if (iTagIndex == -1) {
-          vElements.add(s);
-      } else {
-         // add the string before the value tag and the value tag and then
-         // recurse into this method (there could be more than one value tag)
-         vElements.add(TemplateElement.NewTemplateElement(s.substring(0, iTagIndex)));
-         vElements.add(TemplateElement.NewTemplateElement(ElementTypes.VALUE_TAG));
-         addNonParamNonOptString(s.substring(iTagIndex + Tags.VALUE.length(), s.length()));
-      }
-    }
-
-    void parseTag(String s) {
       int iEndParamAfterParse = 0;
 
-      int [] iTagIndexes= Parser.getTagIndexs(s, Tags.PARAM_HEADER, ">");
+      int [] iTagIndexes= Parser.getTagIndexs(s, Tags.PARAM_HEADER, Tags.PARAM_ENDER);
       int iEndOfHeader = iTagIndexes[1];
       if (iTagIndexes [0] == -1) {
         // no tag simply a string template with out param tags
-        vElements.add(TemplateElement.NewTemplateElement(s));
+        // however this may have <value/> and <opt> tags so we must strip those out
+        addNonParamString(s);
       } else {
         //the string has a tag
         // add the stuff before the tag
         vElements.add(TemplateElement.NewTemplateElement(s.substring(0, iTagIndexes[0])));
-
-        ParamTagElement pte = new ParamTagElement();
-        pte.parseTagHeader(s.substring(iTagIndexes[0], iTagIndexes[1]));
-
-        //set the iTagIndexes variable to the boundrys of the whole param tag
-        iTagIndexes = Parser.getTagIndexs(s, Tags.PARAM_HEADER, Tags.PARAM_ENDER);
-        if (iTagIndexes[0] == -1) {
-          log.warn("This error is usually caused by misplaceing the " +
-                   " slashes inside the param ender tag" +
-                   "\n ie. the param ender tag should be </param> and not <param/>");
-        }
-        String sAfterTag = s.substring(iTagIndexes[1], s.length());
-        // get the tag without the header and ender tags
-        String sParamTag = s.substring(iEndOfHeader, iTagIndexes[1]-Tags.PARAM_ENDER.length());
-        pte.parseTag(sParamTag);
-
-        vElements.add(pte);
+        // add the first param tag
+        vElements.add(new ParamTagElement(s.substring(iTagIndexes[0], iTagIndexes[1])));
         // recurse for anything left after the tag
-        parseTag(s.substring(iTagIndexes[1], s.length()));
+        parseInternal(s.substring(iTagIndexes[1], s.length()));
       }
     }
 
+    public String toString() {
+      StringBuffer sb = new StringBuffer();
+      sb.append(Tags.PARAM_HEADER);
+      if (getName().length() > 0) {
+        sb.append(" ");
+        sb.append(Tags.NAME);
+        sb.append("=\"");
+        sb.append(getName());
+        sb.append("\"");
+      }
+      if (sPre.length() > 0) {
+        sb.append(" ");
+        sb.append(Tags.PRE);
+        sb.append("=\"");
+        sb.append(sPre);
+        sb.append("\"");
+      }
+      if (sPost.length() > 0) {
+        sb.append(" ");
+        sb.append(Tags.POST);
+        sb.append("=\"");
+        sb.append(sPost);
+        sb.append("\"");
+      }
+      if (sDelimiter.length() > 0) {
+        sb.append(" ");
+        sb.append(Tags.DELIMITER);
+        sb.append("=\"");
+        sb.append(sDelimiter);
+        sb.append("\"");
+      }
+      if (sSeparator.length() > 0) {
+        sb.append(" ");
+        sb.append(Tags.SEPARATOR);
+        sb.append("=\"");
+        sb.append(sSeparator);
+        sb.append("\"");
+      }
+      if (sNestedSeparator.length() > 0) {
+        sb.append(" ");
+        sb.append(Tags.NESTED_SEPARATOR);
+        sb.append("=\"");
+        sb.append(sNestedSeparator);
+        sb.append("\"");
+      }
+      sb.append(">");
+      for (int i = 0; i < vElements.size(); i++) {
+        sb.append(vElements.get(i).toString());
+      }
+      sb.append(Tags.PARAM_ENDER);
+      return sb.toString();
+    }
     public TemplateElement getElement(int i) {
         return (TemplateElement) vElements.get(i);
     }

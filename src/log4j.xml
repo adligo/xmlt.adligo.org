@@ -8,12 +8,13 @@
     </layout>
   </appender>
 
-  <logger name="org.adligo.dbswing.treefinder.PFinderEditor"  additivity="false">
+  <logger name="org.adligo.xml.parsers.template.TemplateParserEngine"  additivity="false">
       <level value="DEBUG"/>
       <appender-ref ref="X"/>
   </logger>
   <root>
-    <priority value="DEBUG"/>
+    <priority value="WARN"/>
     <appender-ref ref="X" />
   </root>
+
 </log4j:configuration>

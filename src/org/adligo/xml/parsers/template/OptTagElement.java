@@ -10,23 +10,24 @@ package org.adligo.xml.parsers.template;
  * @author       scott@adligo.com
  * @version 1.3
  */
+import org.adligo.xml.Parser;
+
 
 public class OptTagElement extends TemplateElement{
   String sStringValue = "";
+  int id = -1;
 
-  public OptTagElement() {}
-
-  protected void setStringValue(String s) {
-    sStringValue = s;
+  /**
+   * @param s the whole opt tag ie
+   * <opt id="2">NOT</opt>
+   */
+  public OptTagElement(String s) {
+    int [] tags = Parser.getTagIndexs(s, Tags.OPT_HEADER, ">");
+    id = Integer.parseInt(Parser.getAttributeValue(s.substring(tags[0], tags[1]),"id"));
+    sStringValue = s.substring(tags[1], s.length() - Tags.OPT_ENDER.length());
   }
-
+  public int getId() { return id; }
   public int getType() { return ElementTypes.OPT_TAG; }
   public String getStringValue() { return sStringValue; }
 
-
-  public static TemplateElement NewOptTagElement(int i, String s) {
-    OptTagElement te = new OptTagElement();
-    te.setType(i);
-    return te;
-  }
 }

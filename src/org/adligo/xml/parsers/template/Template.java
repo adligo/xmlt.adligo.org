@@ -44,6 +44,9 @@ public class Template {
       log.warn("The string argument passed to Template.parseInternal was null");
       return;
     }
+    if (log.isDebugEnabled()) {
+      log.debug("parseInternal \n\n\n" + s + " \n\n\n");
+    }
 
     int [] iTagIndexes= Parser.getTagIndexs(s, Tags.PARAM_HEADER, ">");
     int iEndOfHeader = iTagIndexes[1];
@@ -53,10 +56,11 @@ public class Template {
     } else {
       //the string has a tag
       // add the stuff before the tag
-      vElements.add(TemplateElement.NewTemplateElement(s.substring(0, iTagIndexes[0])));
-
-      ParamTagElement pte = new ParamTagElement();
-      pte.parseTagHeader(s.substring(iTagIndexes[0], iTagIndexes[1]));
+      TemplateElement preHeader = TemplateElement.NewTemplateElement(s.substring(0, iTagIndexes[0]));
+      if (log.isDebugEnabled()) {
+        log.debug("adding element '" + preHeader.getStringValue() + "'\n");
+      }
+      vElements.add(preHeader);
 
       //set the iTagIndexes variable to the boundrys of the whole param tag
       iTagIndexes = Parser.getTagIndexs(s, Tags.PARAM_HEADER, Tags.PARAM_ENDER);
@@ -67,8 +71,8 @@ public class Template {
       }
       String sAfterTag = s.substring(iTagIndexes[1], s.length());
       // get the tag without the header and ender tags
-      String sParamTag = s.substring(iEndOfHeader, iTagIndexes[1]-Tags.PARAM_ENDER.length());
-      pte.parseTag(sParamTag);
+      String sParamTag = s.substring(iTagIndexes[0], iTagIndexes[1]);
+      ParamTagElement pte = new ParamTagElement(sParamTag);
 
       vElements.add(pte);
       // recurse for anything left after the tag
@@ -84,7 +88,18 @@ public class Template {
       te = (TemplateElement) vElements.get(i);
       return te;
   }
+  public int getElementCount() {
+    return vElements.size();
+  }
 
-  public String getStringValue() { return te.getStringValue(); }
+  public String getStringValue() {
+    StringBuffer sb = new StringBuffer();
+
+    for (int i = 0; i < vElements.size(); i++) {
+      sb.append(vElements.get(i).toString());
+    }
+    return sb.toString();
+  }
+  public String toString() { return getStringValue(); }
 }
 
