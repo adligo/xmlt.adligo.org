@@ -11,33 +11,33 @@ package org.adligo.xml.parsers.template;
 public class Tags {
   private Tags() {}
   //Tags
-  static public String TEMPLATE_HEADER = new String("<template ");
-  static public String TEMPLATE_ENDER = new String("</template>");
-  static public String PARAM_HEADER = new String("<param ");
-  static public String PARAM_ENDER = new String("</param>");
-  static public String OPT_HEADER = new String("<opt ");
-  static public String OPT_ENDER = new String("</opt>");
-  static public String VALUE = new String("<value/>");
+  public static final String TEMPLATE_HEADER = new String("<template ");
+  public static final String TEMPLATE_ENDER = new String("</template>");
+  public static final String PARAM_HEADER = new String("<param ");
+  public static final String PARAM_ENDER = new String("</param>");
+  public static final String OPT_HEADER = new String("<opt ");
+  public static final String OPT_ENDER = new String("</opt>");
+  public static final String VALUE = new String("<value/>");
 
   // Param Attributes
-  static public String NAME = new String("name");
+  public static final String NAME = new String("name");
   /**
    * The Pre tag sepcifys text before the replacements for all text replaceing the param tag
    * See Documentation for the SEPERATOR tag for a illistruation
    */
-  static public String PRE = new String("pre");
+  public static final String PRE = new String("pre");
   /**
    * The Post tag sepcifys text after the replacements for all text replaceing the param tag
    * See Documentation for the SEPERATOR tag for a illistruation
    */
-  static public String POST = new String("post");
+  public static final String POST = new String("post");
   /**
    * The Delimiter tag sepcifys text between the <value/> tag
    * For instance if the tag was <param name="1" delimiter=","> Foo IN (<value/>) </param>
    * the result for a I_TemplateParams object with name="1" and values [] = {"1","2","3"}would be
    * Foo IN (1,2,3)
    */
-  static public String DELIMITER = new String("delimiter");
+  public static final String DELIMITER = new String("delimiter");
   /**
    * The seperator tag specifys text between replacements
    * of the current param;
@@ -45,7 +45,7 @@ public class Tags {
    * and two I_TemplateParams with the name 1 in the I_Template Params Object the result would be;
    * (foo SP foo)
    */
-  static public String SEPARATOR = new String("separator");
+  public static final String SEPARATOR = new String("separator");
   /**
    * The NESTED_SEPERATOR tag sepcifys text between the nested param tags
    * For instance if the tags were;
@@ -57,5 +57,5 @@ public class Tags {
    * object with names 2 and 3 the result would be
    * PARAM_2 XNOR PARAM_3
    */
-  static public String NESTED_SEPARATOR = new String("nested_separator");
+  public static final String NESTED_SEPARATOR = new String("nested_separator");
 }

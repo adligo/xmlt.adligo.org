@@ -15,7 +15,8 @@ import java.io.FileReader;
 import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Vector;
+import java.util.List;
+import java.util.ArrayList;
 import org.adligo.xml.Parser;
 
 import org.apache.commons.logging.LogFactory;
@@ -23,9 +24,12 @@ import org.apache.commons.logging.Log;
 
 public class Template {
   static Log log = LogFactory.getLog(Template.class);
-  Vector vElements  = new Vector(); // A vector of String elements
-                                    // and ParamTag (nested Template object) elements
-  TemplateElement te;
+  /*
+   *  A list of String elements
+   * and ParamTag (nested Template object) elements
+   */
+  List elements  = new ArrayList(); //
+ 
 
   /**
    * @param String sXML = the xml to be parsed into the object
@@ -52,7 +56,7 @@ public class Template {
     int iEndOfHeader = iTagIndexes[1];
     if (iTagIndexes [0] == -1) {
       // no tag simply a string template with out param tags
-      vElements.add(TemplateElement.NewTemplateElement(s));
+      elements.add(TemplateElement.NewTemplateElement(s));
     } else {
       //the string has a param tag
       // add the stuff before the tag
@@ -60,7 +64,7 @@ public class Template {
       if (log.isDebugEnabled()) {
         log.debug("adding element '" + preHeader.getStringValue() + "'\n");
       }
-      vElements.add(preHeader);
+      elements.add(preHeader);
 
       //set the iTagIndexes variable to the boundrys of the whole param tag
       iTagIndexes = Parser.getTagIndexs(s, Tags.PARAM_HEADER, Tags.PARAM_ENDER);
@@ -74,7 +78,7 @@ public class Template {
       String sParamTag = s.substring(iTagIndexes[0], iTagIndexes[1]);
       ParamTagElement pte = new ParamTagElement(sParamTag);
 
-      vElements.add(pte);
+      elements.add(pte);
       // recurse for anything left after the tag
       parseInternal(s.substring(iTagIndexes[1], s.length()));
     }
@@ -85,18 +89,17 @@ public class Template {
    * false if the element i is a ParamTag (nested Template object) element
    */
   public TemplateElement getElement(int i) {
-      te = (TemplateElement) vElements.get(i);
-      return te;
+      return (TemplateElement) elements.get(i);
   }
   public int getElementCount() {
-    return vElements.size();
+    return elements.size();
   }
 
   public String getStringValue() {
     StringBuffer sb = new StringBuffer();
 
-    for (int i = 0; i < vElements.size(); i++) {
-      sb.append(vElements.get(i).toString());
+    for (int i = 0; i < elements.size(); i++) {
+      sb.append(elements.get(i).toString());
     }
     return sb.toString();
   }

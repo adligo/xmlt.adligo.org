@@ -10,7 +10,8 @@ package org.adligo.xml.parsers.template;
  * @author       scott@adligo.com
  * @version 1.0
  */
-import java.util.Vector;
+import java.util.List;
+import java.util.ArrayList;
 import org.adligo.xml.Parser;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
@@ -23,7 +24,7 @@ public class ParamTagElement extends TemplateElement {
     String sDelimiter = "";
     String sSeparator = "";
     String sNestedSeparator = "";
-    Vector vElements  = new Vector(); // A vector of String elements
+    List elements  = new ArrayList(); // A vector of String elements
                                     // and ParamTag (nestedTemplateobject) elements
     /**
      * This method should take a complete param tag like
@@ -82,7 +83,7 @@ public class ParamTagElement extends TemplateElement {
       int iValueTagIndex = s.indexOf(Tags.VALUE);
       if (iOptTagIndexes[0] == -1 && iValueTagIndex == -1) {
           // just a string
-          vElements.add(TemplateElement.NewTemplateElement(s));
+          elements.add(TemplateElement.NewTemplateElement(s));
           return;
       }
 
@@ -114,22 +115,22 @@ public class ParamTagElement extends TemplateElement {
     }
     private void addPreStringAndOptTag(int [] iOptTagIndexes, String s) {
         if (iOptTagIndexes[0] != 0) {
-          vElements.add(TemplateElement.NewTemplateElement(s.substring(0, iOptTagIndexes[0])));
+          elements.add(TemplateElement.NewTemplateElement(s.substring(0, iOptTagIndexes[0])));
         }
-        vElements.add(new OptTagElement(s.substring(iOptTagIndexes[0], iOptTagIndexes[1])));
+        elements.add(new OptTagElement(s.substring(iOptTagIndexes[0], iOptTagIndexes[1])));
         addNonParamString(s.substring(iOptTagIndexes[1], s.length()));
     }
 
     private void addPreStringAndValueTag(int iValueTagIndex, String s) {
         if (iValueTagIndex != 0) {
-          vElements.add(TemplateElement.NewTemplateElement(s.substring(0, iValueTagIndex)));
+          elements.add(TemplateElement.NewTemplateElement(s.substring(0, iValueTagIndex)));
         }
-        vElements.add(TemplateElement.NewTemplateElement(ElementTypes.VALUE_TAG));
+        elements.add(TemplateElement.NewTemplateElement(ElementTypes.VALUE_TAG));
         addNonParamString(s.substring(iValueTagIndex + Tags.VALUE.length(), s.length()));
     }
 
 
-    public int getElementCount() { return vElements.size(); }
+    public int getElementCount() { return elements.size(); }
     /** this is the recursive method that finds internal param tags and deals with them
      *
      */
@@ -151,7 +152,7 @@ public class ParamTagElement extends TemplateElement {
       	addNonParamString(s.substring(0, iTagIndexes[0]));
         //vElements.add(TemplateElement.NewTemplateElement(s.substring(0, iTagIndexes[0])));
         // add the first param tag
-        vElements.add(new ParamTagElement(s.substring(iTagIndexes[0], iTagIndexes[1])));
+        elements.add(new ParamTagElement(s.substring(iTagIndexes[0], iTagIndexes[1])));
         // recurse for anything left after the tag
         parseInternal(s.substring(iTagIndexes[1], s.length()));
       }
@@ -203,14 +204,14 @@ public class ParamTagElement extends TemplateElement {
         sb.append("\"");
       }
       sb.append(">");
-      for (int i = 0; i < vElements.size(); i++) {
-        sb.append(vElements.get(i).toString());
+      for (int i = 0; i < elements.size(); i++) {
+        sb.append(elements.get(i).toString());
       }
       sb.append(Tags.PARAM_ENDER);
       return sb.toString();
     }
     public TemplateElement getElement(int i) {
-        return (TemplateElement) vElements.get(i);
+        return (TemplateElement) elements.get(i);
     }
     public int getType() { return ElementTypes.PARAM_TAG; }
     public String getName() { return sName; }
