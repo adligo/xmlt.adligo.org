@@ -9,6 +9,7 @@ package org.adligo.xml.parsers.template;
  */
 
 public class Tags {
+  private Tags() {}
   //Tags
   static public String TEMPLATE_HEADER = new String("<template ");
   static public String TEMPLATE_ENDER = new String("</template>");
