@@ -35,7 +35,7 @@
   	  	 	<arg line="-libraryjars ${user_jar_destination}"/>
   	  	 	<arg line="-injars ${user_jar_destination}${buildname}${tag}.jar"/>
   	  	 	<arg line="-outjar ${user_jar_destination}${buildname}${tag}New.jar"/>
-  	  	 	<arg line="-keep 'public class * extends java.lang.Object'"/>
+  		    <arg line="-keep 'public class * { *; }'"/>
   	  	 	<arg line="-dontobfuscate"/>
   	  	 	<arg line="-printseeds"/>
   	 </java>
