@@ -88,7 +88,7 @@ public class TemplateParserEngine {
     return sb.toString().trim();
   }
 
-  static private void addParamStuff(String sNestedSeparator, I_TemplateParams params,
+  static private boolean addParamStuff(String sNestedSeparator, I_TemplateParams params,
   StringBuffer sb, ParamTagElement pte) {
       if (log.isDebugEnabled()) {
         log.debug("entering addParamStuff NestedSeparator = " + sNestedSeparator);
@@ -100,9 +100,10 @@ public class TemplateParserEngine {
       if ( params.getNextParam( pte.getName())) {
         sb.append(sNestedSeparator);
         sb.append(pte.getPre());
-        boolean bFirstOne = true;
         boolean bFirstParam = true;
+        boolean bFirstOne = true;
         do {
+          bFirstParam = true;
           if (bFirstOne == false) {
             sb.append(pte.getSeparator());
           }
@@ -133,8 +134,11 @@ public class TemplateParserEngine {
                   break;
               case ElementTypes.PARAM_TAG:
                   if (bFirstParam == true) {
-                    addParamStuff("",  params.getNestedParams(), sb, (ParamTagElement) te_nested);
-                    bFirstParam = false;
+                    if (addParamStuff("",  params.getNestedParams(), sb, 
+                    	(ParamTagElement) te_nested)) {
+                  
+                    	bFirstParam = false;
+                    }
                   } else {
                     addParamStuff(pte.getNestedSeparator(),  params.getNestedParams(),
                             sb, (ParamTagElement) te_nested);
@@ -144,7 +148,9 @@ public class TemplateParserEngine {
           }
         } while (params.getNextParam( pte.getName()));
         sb.append(pte.getPost());
+        return true;
       }
+      return false;
   }
 
 }
