@@ -84,6 +84,7 @@ public class Templates {
         parseContent(content);
       }catch(java.io.IOException e){
         System.out.println("Cannot access file " + sFileName);
+        e.printStackTrace();
       }
       name = sFileName.substring(sFileName.lastIndexOf(
               System.getProperty("file.separator")) + 1, sFileName.length());
@@ -118,6 +119,7 @@ public class Templates {
         parseContent(new String(str));
       } catch (Exception e) {
           log.warn(" could not find resource " + sFileName);
+          e.printStackTrace();
       }
       name = sFileName.substring(sFileName.lastIndexOf("/") + 1, sFileName.length());
   }
