@@ -71,7 +71,6 @@ public class ParamTagElement extends TemplateElement {
       /**
        * this adds the contense of a string that does not have a param tag
        * inside of it
-       * @todo start with this
        * then finish the parseTag code
        * then rewrite the TemplateParserEngine
        */
@@ -149,7 +148,8 @@ public class ParamTagElement extends TemplateElement {
       } else {
         //the string has a tag
         // add the stuff before the tag
-        vElements.add(TemplateElement.NewTemplateElement(s.substring(0, iTagIndexes[0])));
+      	addNonParamString(s.substring(0, iTagIndexes[0]));
+        //vElements.add(TemplateElement.NewTemplateElement(s.substring(0, iTagIndexes[0])));
         // add the first param tag
         vElements.add(new ParamTagElement(s.substring(iTagIndexes[0], iTagIndexes[1])));
         // recurse for anything left after the tag

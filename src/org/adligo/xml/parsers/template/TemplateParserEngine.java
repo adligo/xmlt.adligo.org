@@ -111,7 +111,9 @@ public class TemplateParserEngine {
           for (int pi = 0; pi < pte.getElementCount(); pi++) {
             TemplateElement te_nested = pte.getElement(pi);
             switch (te_nested.getType()){
-              case ElementTypes.STRING: sb.append(te_nested.toString()); break;
+              case ElementTypes.STRING: 
+              		sb.append(te_nested.toString()); 
+              		break;
               case ElementTypes.VALUE_TAG:
                   String [] values = params.getValues();
                   for (int vi = 0; vi < values.length; vi++) {
@@ -127,7 +129,7 @@ public class TemplateParserEngine {
 	                  OptTagElement ote = (OptTagElement) te_nested;
 	                  for (int oi = 0; oi < iaOptions.length; oi++) {
 	                    if (iaOptions[oi] == ote.getId()) {
-	                      sb.append(ote.getStringValue());
+	                    	sb.append(ote.getContent());
 	                    }
 	                  }
               	  }

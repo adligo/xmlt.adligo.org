@@ -12,7 +12,9 @@ package org.adligo.examples.xml.parsers.template;
  */
 
 import javax.swing.*;
-import org.adligo.xml.parsers.template.*;
+import org.adligo.xml.parsers.template.Template;
+import org.adligo.xml.parsers.template.Templates;
+import org.adligo.xml.parsers.template.TemplateParserEngine;
 import org.adligo.examples.xml.parsers.*;
 import org.adligo.xml.params.*;
 import java.io.*;

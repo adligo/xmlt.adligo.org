@@ -54,7 +54,7 @@ public class Template {
       // no tag simply a string template with out param tags
       vElements.add(TemplateElement.NewTemplateElement(s));
     } else {
-      //the string has a tag
+      //the string has a param tag
       // add the stuff before the tag
       TemplateElement preHeader = TemplateElement.NewTemplateElement(s.substring(0, iTagIndexes[0]));
       if (log.isDebugEnabled()) {
