@@ -157,6 +157,14 @@ public class Templates {
     return (Template) templates.get(sName);
   }
 
+  public String getTemplateAsString(String sName) {
+  	Template t = (Template) templates.get(sName);
+  	if (t == null) {
+      return "";
+  	} else {
+  	  return t.getStringValue();
+  	}
+  }
   /**
    * This adds a template to the object.
    */
