@@ -98,7 +98,13 @@ public class Template {
     for (int i = 0; i < vElements.size(); i++) {
       sb.append(vElements.get(i).toString());
     }
-    return sb.toString();
+    String s = sb.toString();
+    if (s != null) {
+      return s;
+    } else {
+      return "";
+    }
+     
   }
   public String toString() { return getStringValue(); }
 }
