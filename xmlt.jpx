@@ -29,7 +29,7 @@
   <property category="sys" name="LastTag" value="0" />
   <property category="sys" name="Libraries" value="commons-logging-1.0.3;i_provider" />
   <property category="sys" name="MakeStable" value="0" />
-  <property category="sys" name="OutPath" value="../../../classes/xmlt" />
+  <property category="sys" name="OutPath" value="../../classes/xmlt" />
   <property category="sys" name="SourcePath" value="src" />
   <property category="sys" name="Title" value="XML Template Parser" />
   <property category="sys" name="TitleLabel" value="Title:" />
