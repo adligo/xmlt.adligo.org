@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<templates>
+  <template name="persons">
+  SELECT <param name="maxrows"> TOP <value/> </param>
+  fname, mname, lname, nickname, birthday, comment
+  FROM persons p
+  <param name="where" nested_separator=" AND "> WHERE
+    <param name="oid" delimiter="," > oid IN (<value/>) </param>
+    <param name="fname" delimiter="," separator=" OR " pre="(" post=")"> fname LIKE <value/> </param>
+    <param name="mname" delimiter="," separator=" OR " pre="(" post=")"> mname LIKE <value/> </param>
+    <param name="lname" delimiter="," separator=" OR " pre="(" post=")"> lname LIKE <value/> </param>
+    <param name="nickname" delimiter="," separator=" OR " pre="(" post=")"> nickname LIKE <value/> </param>
+    <param name="birthday" delimiter="," separator=" OR " pre="(" post=")"> birthday IN (<value/>) </param>
+  </param>
+  </template>
+
+  <template name="persons_display">
+    <html>
+    <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
+      <meta name="GENERATOR" ></meta>
+    </head>
+    <body>
+    <table COLS="6" WIDTH="100%" >
+    <tr>
+    <td>fname</td><td>mname</td><td>lname</td><td>nickname</td><td>birthday</td><td>comment</td>
+    </tr>
+    <param name="person_row">
+      <tr>
+      <param name="field">
+        <td>-</td>
+      </param>
+      </tr>
+    </param>
+    </table>
+
+    </body>
+    </html>
+  </template>
+
+  <template name="test1">
+    foo bar walks
+    <param name="cow" nested_seperator=" OR ">
+      <param name="horse" nested_seperator=" + ">
+        <param name="pig" >
+          big bas <value/> foobar
+        </param>
+        <param name="frog" >
+          little smitten <value/> og
+        </param>
+      </param>
+      <param name="ox" nested_seperator=" - ">
+        <param name="pig" >
+          big bas <value/> foobar
+        </param>
+        <param name="frog" >
+          little smitten <value/> og
+        </param>
+      </param>
+    </param>
+    on the moo
+  </template>
+</templates>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="us-ascii" ?>
+<!ELEMENT param ( #PCDATA | tr | value | param | td )* >
+<!ATTLIST param name NMTOKEN #REQUIRED >
+<!ATTLIST param separator CDATA #IMPLIED >
+<!ATTLIST param nested_seperator CDATA #IMPLIED >
+
+<!ELEMENT templates ( template+ ) >
+
+<!ELEMENT template ( #PCDATA | html | param )* >
+<!ATTLIST template name NMTOKEN #REQUIRED >
