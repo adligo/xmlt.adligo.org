@@ -12,7 +12,10 @@ import java.util.Vector;
 import org.adligo.xml.parsers.Parser;
 import org.adligo.i.persistence.I_XML_Serilizable;
 
+import org.apache.commons.logging.*;
+
 public class XMLObject {
+  private static final Log log = LogFactory.getLog(XMLObject.class);
   public static final String XML_OBJECT_VERSION = new String("1.0");
 
   /**
@@ -20,8 +23,13 @@ public class XMLObject {
    * from the serilized xml
    */
   public static Object readXML(String s){
-    if (s.trim().length() == 0  || s == null) {
-      System.out.println("XMLObject.readXML null or empty XML String!");
+    if (s == null) {
+        log.fatal(" XMLObject.readXML(String s) was passed a null string");
+        return;
+    }
+    if (s.trim().length() == 0 ) {
+        log.fatal(" XMLObject.readXML(String s) was passed a empty string");
+        return;
     }
     int [] iaObjectHeader = Parser.getTagIndexs(s, I_XML_Serilizable.OBJECT_HEADER, ">");
     String sClass = Parser.getAttributeValue(s.substring(iaObjectHeader[0], iaObjectHeader[1]), I_XML_Serilizable.CLASS);
@@ -37,7 +45,7 @@ public class XMLObject {
       Constructor ct = c.getConstructor(null);
       o = ct.newInstance(null);
       if (! ((I_XML_Serilizable) o ).getClassVersion().equals(sVersion)) {
-        System.out.println("The version of the class in your JVM is different than \n the version saved " +
+        log.fatal("The version of the class in your JVM is different than \n the version saved " +
                         "in your xml!  The object can't be instantiated!");
         return null;
       } else {
