@@ -41,7 +41,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Vector;
 import java.util.HashMap;
-import org.adligo.xml.parsers.Parser;
+import org.adligo.xml.Parser;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;

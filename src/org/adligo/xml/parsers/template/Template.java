@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Vector;
-import org.adligo.xml.parsers.Parser;
+import org.adligo.xml.Parser;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
