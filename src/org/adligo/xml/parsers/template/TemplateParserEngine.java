@@ -11,7 +11,6 @@ package org.adligo.xml.parsers.template;
  * @version 1.3
  */
 import org.adligo.xml.Parser;
-import java.lang.StringIndexOutOfBoundsException;
 import org.adligo.i.persistence.I_TemplateParams;
 
 import org.apache.commons.logging.LogFactory;

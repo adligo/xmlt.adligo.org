@@ -10,10 +10,6 @@ package org.adligo.xml.parsers.template;
  * @author       scott@adligo.com
  * @version 1.0
  */
-import java.io.File;
-import java.io.FileReader;
-import java.io.InputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ArrayList;
