@@ -55,7 +55,7 @@ public class TemplateParser extends JApplet {
     whereArgs.addParam("oid",new String [] {"1","2"}, null);
     whereArgs.addParam("fname",new String [] {"'joe'"}, null);
     whereArgs.addParam("fname",new String [] {"'bob'"}, null);
-    Param where = new Param("where", new String [] {}, whereArgs);
+    Params where = new Params("where", new String [] {}, whereArgs);
     params.addParam(where);
     JTextArea ta = new JTextArea();
     String s = TemplateParserEngine.parse(templates.getTemplate("persons"), params);

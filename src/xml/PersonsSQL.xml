@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<templates>
+  <template name="persons">
+  SELECT <param name="maxrows"> TOP <value/> </param>
+  fname, mname, lname, nickname, birthday, comment
+  FROM persons p
+  <param name="where" nested_separator=" AND "> WHERE
+    <param name="oid" delimiter="," > oid IN (<value/>) </param>
+    <param name="fname" delimiter="," separator=" OR " pre="(" post=")"> fname LIKE <value/> </param>
+    <param name="mname" delimiter="," separator=" OR " pre="(" post=")"> mname LIKE <value/> </param>
+    <param name="lname" delimiter="," separator=" OR " pre="(" post=")"> lname LIKE <value/> </param>
+    <param name="nickname" delimiter="," separator=" OR " pre="(" post=")"> nickname LIKE <value/> </param>
+    <param name="birthday" delimiter="," separator=" OR " pre="(" post=")"> birthday IN (<value/>) </param>
+  </param>
+  </template>
+</templates>
