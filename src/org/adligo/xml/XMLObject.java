@@ -25,11 +25,11 @@ public class XMLObject {
   public static Object readXML(String s){
     if (s == null) {
         log.fatal(" XMLObject.readXML(String s) was passed a null string");
-        return;
+        return null;
     }
     if (s.trim().length() == 0 ) {
         log.fatal(" XMLObject.readXML(String s) was passed a empty string");
-        return;
+        return null;
     }
     int [] iaObjectHeader = Parser.getTagIndexs(s, I_XML_Serilizable.OBJECT_HEADER, ">");
     String sClass = Parser.getAttributeValue(s.substring(iaObjectHeader[0], iaObjectHeader[1]), I_XML_Serilizable.CLASS);
