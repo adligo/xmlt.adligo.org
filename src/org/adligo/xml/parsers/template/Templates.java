@@ -134,6 +134,7 @@ public class Templates {
     int headerStart,headerEnd,closerStart,closerEnd;
 
     headerStart = content.indexOf(Tags.TEMPLATE_HEADER);
+    
     headerEnd = content.indexOf(">", headerStart);
     String sName = Parser.getAttributeValue(content.substring(headerStart,headerEnd),
             Tags.NAME);
