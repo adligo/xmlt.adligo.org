@@ -96,61 +96,63 @@ public class TemplateParserEngine {
         log.debug(" \n\n\n");
       }
 
-      params.First();
-      if ( params.getNextParam( pte.getName())) {
-        sb.append(sNestedSeparator);
-        sb.append(pte.getPre());
-        boolean bFirstParam = true;
-        boolean bFirstOne = true;
-        do {
-          bFirstParam = true;
-          if (bFirstOne == false) {
-            sb.append(pte.getSeparator());
-          }
-          bFirstOne = false;
-          for (int pi = 0; pi < pte.getElementCount(); pi++) {
-            TemplateElement te_nested = pte.getElement(pi);
-            switch (te_nested.getType()){
-              case ElementTypes.STRING: 
-              		sb.append(te_nested.toString()); 
-              		break;
-              case ElementTypes.VALUE_TAG:
-                  String [] values = params.getValues();
-                  for (int vi = 0; vi < values.length; vi++) {
-                    if (vi >= 1) {
-                      sb.append(pte.getDelimiter());
-                    }
-                    sb.append(values[vi]);
-                  }
-                  break;
-              case ElementTypes.OPT_TAG:
-                  int [] iaOptions = params.getOptions();
-              	  if (iaOptions != null) {
-	                  OptTagElement ote = (OptTagElement) te_nested;
-	                  for (int oi = 0; oi < iaOptions.length; oi++) {
-	                    if (iaOptions[oi] == ote.getId()) {
-	                    	sb.append(ote.getContent());
+      if (params != null ) {
+	      params.First();
+	      if ( params.getNextParam( pte.getName())) {
+	        sb.append(sNestedSeparator);
+	        sb.append(pte.getPre());
+	        boolean bFirstParam = true;
+	        boolean bFirstOne = true;
+	        do {
+	          bFirstParam = true;
+	          if (bFirstOne == false) {
+	            sb.append(pte.getSeparator());
+	          }
+	          bFirstOne = false;
+	          for (int pi = 0; pi < pte.getElementCount(); pi++) {
+	            TemplateElement te_nested = pte.getElement(pi);
+	            switch (te_nested.getType()){
+	              case ElementTypes.STRING: 
+	              		sb.append(te_nested.toString()); 
+	              		break;
+	              case ElementTypes.VALUE_TAG:
+	                  String [] values = params.getValues();
+	                  for (int vi = 0; vi < values.length; vi++) {
+	                    if (vi >= 1) {
+	                      sb.append(pte.getDelimiter());
 	                    }
+	                    sb.append(values[vi]);
 	                  }
-              	  }
-                  break;
-              case ElementTypes.PARAM_TAG:
-                  if (bFirstParam == true) {
-                    if (addParamStuff("",  params.getNestedParams(), sb, 
-                    	(ParamTagElement) te_nested)) {
-                  
-                    	bFirstParam = false;
-                    }
-                  } else {
-                    addParamStuff(pte.getNestedSeparator(),  params.getNestedParams(),
-                            sb, (ParamTagElement) te_nested);
-                  }
-                  break;
-            }
-          }
-        } while (params.getNextParam( pte.getName()));
-        sb.append(pte.getPost());
-        return true;
+	                  break;
+	              case ElementTypes.OPT_TAG:
+	                  int [] iaOptions = params.getOptions();
+	              	  if (iaOptions != null) {
+		                  OptTagElement ote = (OptTagElement) te_nested;
+		                  for (int oi = 0; oi < iaOptions.length; oi++) {
+		                    if (iaOptions[oi] == ote.getId()) {
+		                    	sb.append(ote.getContent());
+		                    }
+		                  }
+	              	  }
+	                  break;
+	              case ElementTypes.PARAM_TAG:
+	                  if (bFirstParam == true) {
+	                    if (addParamStuff("",  params.getNestedParams(), sb, 
+	                    	(ParamTagElement) te_nested)) {
+	                  
+	                    	bFirstParam = false;
+	                    }
+	                  } else {
+	                    addParamStuff(pte.getNestedSeparator(),  params.getNestedParams(),
+	                            sb, (ParamTagElement) te_nested);
+	                  }
+	                  break;
+	            }
+	          }
+	        } while (params.getNextParam( pte.getName()));
+	        sb.append(pte.getPost());
+	        return true;
+	      }
       }
       return false;
   }
