@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- testing the new org.adligo cvs server -->
 <project basedir="." default="compile" name="treefinder">
 	<property file="${user.home}/conf/adligo/user.properties"
 			          description="properties that tailor the build to your computer."/>
