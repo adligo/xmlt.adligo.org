@@ -116,11 +116,13 @@ public class TemplateParserEngine {
 	              		break;
 	              case ElementTypes.VALUE_TAG:
 	                  String [] values = params.getValues();
-	                  for (int vi = 0; vi < values.length; vi++) {
-	                    if (vi >= 1) {
-	                      sb.append(pte.getDelimiter());
-	                    }
-	                    sb.append(values[vi]);
+	                  if (values != null) {
+		                  for (int vi = 0; vi < values.length; vi++) {
+		                    if (vi >= 1) {
+		                      sb.append(pte.getDelimiter());
+		                    }
+		                    sb.append(values[vi]);
+		                  }
 	                  }
 	                  break;
 	              case ElementTypes.OPT_TAG:
