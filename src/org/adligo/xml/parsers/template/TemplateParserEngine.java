@@ -69,7 +69,7 @@ public class TemplateParserEngine {
   }
 
   static private String parseInternal(Template template, I_TemplateParams params) {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
 
     if (log.isDebugEnabled()) {
         log.debug(" " + template.getElementCount());
@@ -88,7 +88,7 @@ public class TemplateParserEngine {
   }
 
   static private boolean addParamStuff(String sNestedSeparator, I_TemplateParams params,
-  StringBuffer sb, ParamTagElement pte) {
+  StringBuilder sb, ParamTagElement pte) {
       if (log.isDebugEnabled()) {
         log.debug("entering addParamStuff NestedSeparator = " + sNestedSeparator);
         log.debug(" param name = " +  pte.getName());
