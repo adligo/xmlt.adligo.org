@@ -16,7 +16,8 @@ import org.adligo.xml.parsers.template.Template;
 import org.adligo.xml.parsers.template.Templates;
 import org.adligo.xml.parsers.template.TemplateParserEngine;
 import org.adligo.examples.xml.parsers.*;
-import org.adligo.xml.params.*;
+import org.adligo.models.params.client.Param;
+import org.adligo.models.params.client.Params;
 import java.io.*;
 import java.awt.*;
 

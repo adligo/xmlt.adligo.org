@@ -10,7 +10,7 @@ package org.adligo.xml.parsers.template;
  * @author       scott@adligo.com
  * @version 1.3
  */
-import org.adligo.xml.Parser;
+import org.adligo.models.params.client.Parser;
 
 
 public class OptTagElement extends TemplateElement{

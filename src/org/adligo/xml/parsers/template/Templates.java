@@ -37,14 +37,13 @@ package org.adligo.xml.parsers.template;
 import java.io.File;
 import java.io.FileReader;
 import java.io.InputStream;
-import java.io.IOException;
 import java.net.URL;
-import java.util.Vector;
 import java.util.HashMap;
-import org.adligo.xml.Parser;
 
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
+import org.adligo.i.log.client.Log;
+import org.adligo.i.log.client.LogFactory;
+import org.adligo.models.params.client.Parser;
+
 
 public class Templates {
   Log log = LogFactory.getLog(Templates.class);

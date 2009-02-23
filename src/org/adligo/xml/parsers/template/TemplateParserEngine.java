@@ -10,11 +10,10 @@ package org.adligo.xml.parsers.template;
  * @author       scott@adligo.com
  * @version 1.3
  */
-import org.adligo.xml.Parser;
-import org.adligo.i.persistence.I_TemplateParams;
+import org.adligo.i.log.client.Log;
+import org.adligo.i.log.client.LogFactory;
+import org.adligo.models.params.client.I_TemplateParams;
 
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
 
 public class TemplateParserEngine {
   static final Log log = LogFactory.getLog(TemplateParserEngine.class);
