@@ -45,6 +45,7 @@ import org.adligo.i.log.client.LogFactory;
 import org.adligo.models.params.client.Parser;
 
 
+@SuppressWarnings("unchecked")
 public class Templates {
   Log log = LogFactory.getLog(Templates.class);
   String name = new String(""); //used to manage several of these objects
@@ -116,7 +117,7 @@ public class Templates {
         is.close();
         parseContent(new String(str));
       } catch (Exception e) {
-          log.error(" could not find resource " + sFileName, e);
+          log.error("problem parsing or could not find resource " + sFileName, e);
       }
       name = sFileName.substring(sFileName.lastIndexOf("/") + 1, sFileName.length());
   }
@@ -166,7 +167,8 @@ public class Templates {
   /**
    * This adds a template to the object.
    */
-  public void addTemplate(String sName, Template template) {
+  
+public void addTemplate(String sName, Template template) {
     templates.put(sName, template);
   }
 

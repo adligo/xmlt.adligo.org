@@ -10,22 +10,22 @@ package org.adligo.xml.parsers.template;
  * @author       scott@adligo.com
  * @version 1.0
  */
-import java.net.URL;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
 import org.adligo.models.params.client.Parser;
 
-
+@SuppressWarnings("unchecked")
 public class Template {
   static Log log = LogFactory.getLog(Template.class);
   /*
    *  A list of String elements
    * and ParamTag (nested Template object) elements
    */
-  List elements  = new ArrayList(); //
+  
+List elements  = new ArrayList(); //
  
 
   /**

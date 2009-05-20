@@ -2,15 +2,38 @@
 <templates>
   <template name="persons">
   SELECT <param name="maxrows"> TOP <value/> </param>
+  <param name="name"> fname || mname || lname </param>
+  <param name="default">
   fname, mname, lname, nickname, birthday, comment
+  </param>
   FROM persons p
   <param name="where" nested_separator=" AND "> WHERE
-    <param name="oid" delimiter="," > oid IN (<value/>) </param>
-    <param name="fname" delimiter="," separator=" OR " pre="(" post=")"> fname LIKE <value/> </param>
-    <param name="mname" delimiter="," separator=" OR " pre="(" post=")"> mname LIKE <value/> </param>
-    <param name="lname" delimiter="," separator=" OR " pre="(" post=")"> lname LIKE <value/> </param>
-    <param name="nickname" delimiter="," separator=" OR " pre="(" post=")"> nickname LIKE <value/> </param>
-    <param name="birthday" delimiter="," separator=" OR " pre="(" post=")"> birthday IN (<value/>) </param>
+    <param name="oid" delimiter="," ><operator id="2" /> oid <operator/><value/><operator id="1" /> </param>
+    <param name="parent" delimiter="," > parent IN (<value/>) </param>
+    <param name="fname" delimiter="," separator=" OR " pre="(" post=")"> fname <operator/> <value/> </param>
+    <param name="mname" delimiter="," separator=" OR " pre="(" post=")"> mname <operator/> <value/> </param>
+    <param name="lname" delimiter="," separator=" OR " pre="(" post=")"> lname <operator/> <value/> </param>
+    <param name="nickname" delimiter="," separator=" OR " pre="(" post=")"> nickname <operator/> <value/> </param>
+    <param name="birthday" >
+      (<param name="range" separator=" OR " nested_separator=" AND ">
+        (<param name="start_range"> birthday <operator/><value/></param>
+          <param name="end_range"> birthday <operator/><value/></param>
+        )
+        </param>
+      )
+    </param>
+    <param name="p_e_addresses" nested_separator=" AND ">
+        <opt id="1">NOT</opt> EXISTS (SELECT tid FROM o_e_addresses E WHERE O.tid = E.fk AND
+        <param name="edited" >
+          (<param name="range" separator=" OR " nested_separator=" AND ">
+            (<param name="start_range"> E.edited <operator/><value/></param>
+            <param name="end_range"> E.edited <operator/><value/></param>)
+          </param>)
+        </param>
+        <param name="edited_by" delimiter="," > E.edited_by <operator/><value/><operator id="1"/></param>
+        <param name="address" separator=" OR " pre="(" post=")"> E.address <operator/> <value/></param>
+        <param name="type_l" delimiter=",">  E.type <operator/><value/><operator id="1"/></param>)
+    </param>
   </param>
   </template>
 
@@ -38,26 +61,5 @@
     </html>
   </template>
 
-  <template name="test1">
-    foo bar walks
-    <param name="cow" nested_seperator=" OR ">
-      <param name="horse" nested_seperator=" + ">
-        <param name="pig" >
-          big bas <value/> foobar
-        </param>
-        <param name="frog" >
-          little smitten <value/> og
-        </param>
-      </param>
-      <param name="ox" nested_seperator=" - ">
-        <param name="pig" >
-          big bas <value/> foobar
-        </param>
-        <param name="frog" >
-          little smitten <value/> og
-        </param>
-      </param>
-    </param>
-    on the moo
-  </template>
+ 
 </templates>

@@ -42,4 +42,11 @@ public class TemplateElement {
     te.setType(i);
     return te;
   }
+  
+  public static TemplateElement NewTemplateElement(int i, String s) {
+	    TemplateElement te = new TemplateElement();
+	    te.setType(i);
+	    te.setStringValue(s);
+	    return te;
+   }
 }

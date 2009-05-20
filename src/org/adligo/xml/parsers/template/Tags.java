@@ -15,8 +15,8 @@ public class Tags {
   public static final String TEMPLATE_ENDER = new String("</template>");
   public static final String PARAM_HEADER = new String("<param ");
   public static final String PARAM_ENDER = new String("</param>");
-  public static final String OPT_HEADER = new String("<opt ");
-  public static final String OPT_ENDER = new String("</opt>");
+  public static final String OPERATOR_HEADER = new String("<operator");
+  public static final String ID_ATTRIBUTE = new String("id");
   public static final String VALUE = new String("<value/>");
 
   // Param Attributes

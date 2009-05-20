@@ -12,13 +12,24 @@ package org.adligo.xml.parsers.template;
  */
 import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
+import org.adligo.j2se.util.J2SEPlatform;
 import org.adligo.models.params.client.I_TemplateParams;
 
 
 public class TemplateParserEngine {
   static final Log log = LogFactory.getLog(TemplateParserEngine.class);
 
-     /**
+  static {
+	  try {
+		  //init the wrappers for params and
+		  // the adligo log system, this package is 
+		  // server or fat client (2teir only)
+	  	J2SEPlatform.init();
+	  } catch (Exception x) {
+		  x.printStackTrace();
+	  }
+  }
+  /**
    * This takes a string of a particular template and uses the information
    * in the I_TemplateParams object to replace the param tags with runtime info.
    *
@@ -57,15 +68,6 @@ public class TemplateParserEngine {
     return r;
   }
 
-  /**
-   * @deprecated use Template I_TemplateParams
-   */
-  static public String parse(String s, I_TemplateParams params)   {
-
-    String r = parseInternal(new Template(s), params);
-    //System.out.println("parse returns \n" + r);
-    return r;
-  }
 
   static private String parseInternal(Template template, I_TemplateParams params) {
     StringBuilder sb = new StringBuilder();
@@ -114,7 +116,7 @@ public class TemplateParserEngine {
 	              		sb.append(te_nested.toString()); 
 	              		break;
 	              case ElementTypes.VALUE_TAG:
-	                  String [] values = params.getValues();
+	                  Object [] values = params.getValues();
 	                  if (values != null) {
 		                  for (int vi = 0; vi < values.length; vi++) {
 		                    if (vi >= 1) {
@@ -124,15 +126,14 @@ public class TemplateParserEngine {
 		                  }
 	                  }
 	                  break;
-	              case ElementTypes.OPT_TAG:
-	                  int [] iaOptions = params.getOptions();
-	              	  if (iaOptions != null) {
-		                  OptTagElement ote = (OptTagElement) te_nested;
-		                  for (int oi = 0; oi < iaOptions.length; oi++) {
-		                    if (iaOptions[oi] == ote.getId()) {
-		                    	sb.append(ote.getContent());
-		                    }
-		                  }
+	              case ElementTypes.OPEARTOR_TAG:
+	                  String [] operators = params.getOperators();
+	              	  if (operators != null) {
+	              		 OperatorTagElement ote = (OperatorTagElement) te_nested;
+	              		 int id = ote.getId();
+	              		 if (id >= 0 && id < operators.length) {
+	              			 sb.append(operators[id]);
+	              		 }
 	              	  }
 	                  break;
 	              case ElementTypes.PARAM_TAG:

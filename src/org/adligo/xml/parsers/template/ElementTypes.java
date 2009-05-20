@@ -17,5 +17,5 @@ public class ElementTypes {
   public static final int STRING = 0;
   public static final int PARAM_TAG = 1;
   public static final int VALUE_TAG = 2;
-  public static final int OPT_TAG = 3;
+  public static final int OPEARTOR_TAG = 3;
 }

@@ -17,6 +17,7 @@ import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
 import org.adligo.models.params.client.Parser;
 
+@SuppressWarnings("unchecked")
 public class ParamTagElement extends TemplateElement {
     static Log log = LogFactory.getLog(ParamTagElement.class);
     String sName = "";
@@ -25,7 +26,7 @@ public class ParamTagElement extends TemplateElement {
     String sDelimiter = "";
     String sSeparator = "";
     String sNestedSeparator = "";
-    List elements  = new ArrayList(); // A vector of String elements
+    List elements  = new ArrayList(); // A list of String elements
                                     // and ParamTag (nestedTemplateobject) elements
     /**
      * This method should take a complete param tag like
@@ -77,58 +78,60 @@ public class ParamTagElement extends TemplateElement {
        * then rewrite the TemplateParserEngine
        */
     private void addNonParamString(String s) {
+      String original = s;
       if (s.length() == 0) {
         return;
       }
-      int [] iOptTagIndexes= Parser.getTagIndexs(s, Tags.OPT_HEADER, Tags.OPT_ENDER);
-      int iValueTagIndex = s.indexOf(Tags.VALUE);
-      if (iOptTagIndexes[0] == -1 && iValueTagIndex == -1) {
+      int [] nextOperatorTagIndexes= Parser.getTagIndexs(s, Tags.OPERATOR_HEADER, ">");
+      int nextValueTagIndex = s.indexOf(Tags.VALUE);
+      if (nextOperatorTagIndexes[0] == -1 && nextValueTagIndex == -1) {
           // just a string
           elements.add(TemplateElement.NewTemplateElement(s));
           return;
-      }
+      } 
 
-      // add the string before the first tag and the first tag and then recurse untill
+      // add the string before the first tag and the first tag and then recurse until
       // s.length = 0
-      if (iOptTagIndexes[0] != -1 && iValueTagIndex != -1) {
-        // there is a opt tag and a value tag
-        if (iOptTagIndexes[0] > iValueTagIndex) {
-          // value tag is first so add that
-          addPreStringAndValueTag(iValueTagIndex, s);
-          return;
-        } else {
-          // opt tag is before value tag
-          addPreStringAndOptTag(iOptTagIndexes, s);
-          return;
-        }
+      while (nextOperatorTagIndexes[0] != -1 || nextValueTagIndex != -1) {
+    	  	
+    	  //figure out whats next, either a 
+    	  //String, Value node or Operator node
+    	  int nextIndex = nextOperatorTagIndexes[0];
+    	  if (nextIndex == -1) {
+    		  nextIndex = nextValueTagIndex;
+    	  } else if (nextValueTagIndex < nextIndex && nextValueTagIndex != -1) {
+    		  nextIndex = nextValueTagIndex;
+    	  }
+    	  if (nextIndex == 0) {
+    		  if (nextValueTagIndex == 0) {
+    			  // its a value tag
+    			  elements.add(TemplateElement.NewTemplateElement(ElementTypes.VALUE_TAG, Tags.VALUE));
+    			  s = s.substring(Tags.VALUE.length(), s.length());
+    		  } else if (nextOperatorTagIndexes[0] == 0) {
+    			  // its a operator tag
+    			  OperatorTagElement operator = new OperatorTagElement();
+    			  String id = Parser.getAttribute(nextOperatorTagIndexes, s, Tags.ID_ATTRIBUTE);
+    			  if (id != null) {
+    				  operator.setId(new Integer(id));
+    			  }
+    			  String operatorValue = s.substring(nextOperatorTagIndexes[0], nextOperatorTagIndexes[1]);
+    			  operator.setStringValue(operatorValue);
+    			  elements.add(operator);
+    			  s = s.substring(nextOperatorTagIndexes[1], s.length());
+    		  } 
+    	  } else {
+    		//its text and then something
+			  String text = s.substring(0, nextIndex);
+			  s = s.substring(nextIndex, s.length());
+			  elements.add(TemplateElement.NewTemplateElement(text));
+    	  }
+    	  
+    	  nextOperatorTagIndexes= Parser.getTagIndexs(s, Tags.OPERATOR_HEADER, ">");
+          nextValueTagIndex = s.indexOf(Tags.VALUE);
       }
+    }
+   
 
-      // Ok that ends the value and opt tag condition
-      // If there is only a value tag
-      if (iValueTagIndex != -1) {
-          addPreStringAndValueTag(iValueTagIndex, s);
-          return;
-      }
-      if (iOptTagIndexes[0] != -1) {
-          addPreStringAndOptTag(iOptTagIndexes, s);
-          return;
-      }
-    }
-    private void addPreStringAndOptTag(int [] iOptTagIndexes, String s) {
-        if (iOptTagIndexes[0] != 0) {
-          elements.add(TemplateElement.NewTemplateElement(s.substring(0, iOptTagIndexes[0])));
-        }
-        elements.add(new OptTagElement(s.substring(iOptTagIndexes[0], iOptTagIndexes[1])));
-        addNonParamString(s.substring(iOptTagIndexes[1], s.length()));
-    }
-
-    private void addPreStringAndValueTag(int iValueTagIndex, String s) {
-        if (iValueTagIndex != 0) {
-          elements.add(TemplateElement.NewTemplateElement(s.substring(0, iValueTagIndex)));
-        }
-        elements.add(TemplateElement.NewTemplateElement(ElementTypes.VALUE_TAG));
-        addNonParamString(s.substring(iValueTagIndex + Tags.VALUE.length(), s.length()));
-    }
 
 
     public int getElementCount() { return elements.size(); }
@@ -139,10 +142,8 @@ public class ParamTagElement extends TemplateElement {
       if (log.isDebugEnabled()) {
         log.debug("entering parseInternal '" + s + "'");
       }
-      int iEndParamAfterParse = 0;
-
+      
       int [] iTagIndexes= Parser.getTagIndexs(s, Tags.PARAM_HEADER, Tags.PARAM_ENDER);
-      int iEndOfHeader = iTagIndexes[1];
       if (iTagIndexes [0] == -1) {
         // no tag simply a string template with out param tags
         // however this may have <value/> and <opt> tags so we must strip those out
