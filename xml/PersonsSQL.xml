@@ -9,21 +9,21 @@
   FROM persons p
   <param name="where" nested_separator=" AND "> WHERE
     <param name="oid" delimiter="," ><operator id="2" /> oid <operator/><value/><operator id="1" /> </param>
-    <param name="parent" delimiter="," > parent IN (<value/>) </param>
+    <param name="parent" delimiter="," > parent <operator/><value/><operator id="1" /> </param>
     <param name="fname" delimiter="," separator=" OR " pre="(" post=")"> fname <operator/> <value/> </param>
     <param name="mname" delimiter="," separator=" OR " pre="(" post=")"> mname <operator/> <value/> </param>
     <param name="lname" delimiter="," separator=" OR " pre="(" post=")"> lname <operator/> <value/> </param>
     <param name="nickname" delimiter="," separator=" OR " pre="(" post=")"> nickname <operator/> <value/> </param>
     <param name="birthday" >
       (<param name="range" separator=" OR " nested_separator=" AND ">
-        (<param name="start_range"> birthday <operator/><value/></param>
-          <param name="end_range"> birthday <operator/><value/></param>
+        (<param name="start_range"> birthday <operator/> <value/> </param>
+          <param name="end_range"> birthday <operator/> <value/> </param>
         )
         </param>
       )
     </param>
     <param name="p_e_addresses" nested_separator=" AND ">
-        <opt id="1">NOT</opt> EXISTS (SELECT tid FROM o_e_addresses E WHERE O.tid = E.fk AND
+        <operator/> EXISTS (SELECT tid FROM o_e_addresses E WHERE O.tid = E.fk AND
         <param name="edited" >
           (<param name="range" separator=" OR " nested_separator=" AND ">
             (<param name="start_range"> E.edited <operator/><value/></param>
@@ -36,30 +36,4 @@
     </param>
   </param>
   </template>
-
-  <template name="persons_display">
-    <html>
-    <head>
-      <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
-      <meta name="GENERATOR" ></meta>
-    </head>
-    <body>
-    <table COLS="6" WIDTH="100%" >
-    <tr>
-    <td>fname</td><td>mname</td><td>lname</td><td>nickname</td><td>birthday</td><td>comment</td>
-    </tr>
-    <param name="person_row">
-      <tr>
-      <param name="field">
-        <td>-</td>
-      </param>
-      </tr>
-    </param>
-    </table>
-
-    </body>
-    </html>
-  </template>
-
- 
 </templates>

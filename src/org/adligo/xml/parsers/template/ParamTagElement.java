@@ -129,6 +129,10 @@ public class ParamTagElement extends TemplateElement {
     	  nextOperatorTagIndexes= Parser.getTagIndexs(s, Tags.OPERATOR_HEADER, ">");
           nextValueTagIndex = s.indexOf(Tags.VALUE);
       }
+      if (s.length() > 0) {
+    	  //traling string
+    	  elements.add(TemplateElement.NewTemplateElement(s));
+      }
     }
    
 
@@ -151,10 +155,12 @@ public class ParamTagElement extends TemplateElement {
       } else {
         //the string has a tag
         // add the stuff before the tag
-      	addNonParamString(s.substring(0, iTagIndexes[0]));
+    	String preTag = s.substring(0, iTagIndexes[0]);
+      	addNonParamString(preTag);
         //vElements.add(TemplateElement.NewTemplateElement(s.substring(0, iTagIndexes[0])));
         // add the first param tag
-        elements.add(new ParamTagElement(s.substring(iTagIndexes[0], iTagIndexes[1])));
+      	String tag = s.substring(iTagIndexes[0], iTagIndexes[1]);
+        elements.add(new ParamTagElement(tag));
         // recurse for anything left after the tag
         parseInternal(s.substring(iTagIndexes[1], s.length()));
       }
