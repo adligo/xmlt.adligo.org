@@ -116,6 +116,9 @@ public class Templates {
         }
         is.close();
         parseContent(new String(str));
+      } catch (StringIndexOutOfBoundsException e) {
+    	  log.error("There is a bug in the template parser, please send your file to bugs@adligo.com");
+    	  log.error(e.getMessage(), e);
       } catch (Exception e) {
           log.error("problem parsing or could not find resource " + sFileName, e);
       }

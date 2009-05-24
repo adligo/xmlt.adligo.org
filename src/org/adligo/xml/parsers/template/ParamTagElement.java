@@ -82,7 +82,7 @@ public class ParamTagElement extends TemplateElement {
       if (s.length() == 0) {
         return;
       }
-      int [] nextOperatorTagIndexes= Parser.getTagIndexs(s, Tags.OPERATOR_HEADER, ">");
+      int [] nextOperatorTagIndexes= Parser.getTagIndexs(s, Tags.OPERATOR_HEADER, "/>");
       int nextValueTagIndex = s.indexOf(Tags.VALUE);
       if (nextOperatorTagIndexes[0] == -1 && nextValueTagIndex == -1) {
           // just a string
@@ -126,7 +126,7 @@ public class ParamTagElement extends TemplateElement {
 			  elements.add(TemplateElement.NewTemplateElement(text));
     	  }
     	  
-    	  nextOperatorTagIndexes= Parser.getTagIndexs(s, Tags.OPERATOR_HEADER, ">");
+    	  nextOperatorTagIndexes= Parser.getTagIndexs(s, Tags.OPERATOR_HEADER, "/>");
           nextValueTagIndex = s.indexOf(Tags.VALUE);
       }
       if (s.length() > 0) {
