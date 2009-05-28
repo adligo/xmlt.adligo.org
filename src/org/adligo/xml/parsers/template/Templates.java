@@ -38,18 +38,21 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
 import org.adligo.models.params.client.Parser;
 
-
 @SuppressWarnings("unchecked")
 public class Templates {
   Log log = LogFactory.getLog(Templates.class);
   String name = new String(""); //used to manage several of these objects
-  private HashMap templates = new HashMap();
+  private List<String> templateNames = new ArrayList<String>();
+  private HashMap<String,Template> templates = new HashMap<String,Template>();
 
   /**
    * Default Constructor
@@ -69,7 +72,7 @@ public class Templates {
    * passing in the text from the xml file.
    * Note: You must supply the complete relative path in the sFileName argument!
    */
-  public void parseFile(String sFileName) {
+  public synchronized void parseFile(String sFileName) {
     if (log.isDebugEnabled()) {
       log.debug(" parseingFile " + sFileName);
     }
@@ -100,7 +103,7 @@ public class Templates {
    * /com/adligo/ui/treefinder/Treefinder_HTML.xml
    *
    */
-  public void parseResource(String sFileName) {
+  public synchronized void parseResource(String sFileName) {
     if (log.isDebugEnabled()) {
       log.debug(" parseingResource " + sFileName);
     }
@@ -146,6 +149,7 @@ public class Templates {
     //delete the template that was parsed from the content string
     content = content.substring(closerEnd);
     templates.put(sName, template);
+    templateNames.add(sName);
     if (content.indexOf(Tags.TEMPLATE_HEADER) != -1) {
       parseContent(content); // recursion
     }
@@ -171,17 +175,22 @@ public class Templates {
    * This adds a template to the object.
    */
   
-public void addTemplate(String sName, Template template) {
+  public synchronized void addTemplate(String sName, Template template) {
+	templateNames.add(sName);
     templates.put(sName, template);
   }
 
   /**
    * This removes a template to the object.
    */
-  public void removeTemplate(Template template) {
+  public synchronized void removeTemplate(Template template) {
     templates.remove(template);
   }
 
+  public Iterator<String> getTemplateNames() {
+	  return templateNames.iterator();
+  }
+  
   public void setName(String s) { name = s;}
   public String getName() { return name;}
 }
