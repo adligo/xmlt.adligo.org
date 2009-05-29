@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.adligo.models.params.client.I_Operators;
 import org.adligo.models.params.client.I_TemplateParams;
 import org.adligo.xml.parsers.template.Template;
 
@@ -11,7 +12,7 @@ public class JdbcTemplateParserValues {
 	Connection connection;
 	Template template;
 	I_TemplateParams params;
-	Set<String[]> allowedOperators = new HashSet<String[]>();
+	Set<I_Operators> allowedOperators;
 	
 
 	public boolean validate() {
@@ -42,12 +43,16 @@ public class JdbcTemplateParserValues {
 	public void setParams(I_TemplateParams params) {
 		this.params = params;
 	}
-	public Set<String[]> getAllowedOperators() {
+	public Set<I_Operators> getAllowedOperators() {
 		return allowedOperators;
 	}
-	public  void setAllowedOperators(Set<String[]> p) {
-		allowedOperators.clear();
-		allowedOperators.addAll(p);
+	/**
+	 * it is recomended you pass in a unmodifieable Set
+	 * Collections.unmodifiableSet
+	 * @param p
+	 */
+	public  void setAllowedOperators(Set<I_Operators> p) {
+		allowedOperators = p;
 	}
 	public Connection getConnection() {
 		return connection;

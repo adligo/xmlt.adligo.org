@@ -13,6 +13,7 @@ package org.adligo.xml.parsers.template;
 import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
 import org.adligo.j2se.util.J2SEPlatform;
+import org.adligo.models.params.client.I_Operators;
 import org.adligo.models.params.client.I_TemplateParams;
 
 
@@ -127,13 +128,16 @@ public class TemplateParserEngine {
 	                  }
 	                  break;
 	              case ElementTypes.OPEARTOR_TAG:
-	                  String [] operators = params.getOperators();
+	                  I_Operators operators = params.getOperators();
 	              	  if (operators != null) {
-	              		 OperatorTagElement ote = (OperatorTagElement) te_nested;
-	              		 int id = ote.getId();
-	              		 if (id >= 0 && id < operators.length) {
-	              			 sb.append(operators[id]);
-	              		 }
+	              		  String [] ops = operators.getValues();
+	              		  if (ops != null) {
+		              		 OperatorTagElement ote = (OperatorTagElement) te_nested;
+		              		 int id = ote.getId();
+		              		 if (id >= 0 && id < ops.length) {
+		              			 sb.append(ops[id]);
+		              		 }
+	              		  }
 	              	  }
 	                  break;
 	              case ElementTypes.PARAM_TAG:
