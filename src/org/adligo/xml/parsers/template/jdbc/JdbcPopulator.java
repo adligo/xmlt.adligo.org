@@ -6,37 +6,15 @@ import java.util.Date;
 
 import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
-import org.adligo.i.util.client.ArrayCollection;
 import org.adligo.models.params.client.ValueTypes;
 
-public class JdbcParamValueAggregator {
-	private static final Log log = LogFactory.getLog(JdbcParamValueAggregator.class);
+public class JdbcPopulator {
+	private static final Log log = LogFactory.getLog(JdbcPopulator.class);
 	
-	
-	private ArrayCollection allValues = new ArrayCollection();
-	private ArrayCollection allValueTypes = new ArrayCollection();
-	
-	public void addValue(short type, Object o) {
-		allValueTypes.add(type);
-		allValues.add(o);
-	}
-	
-	public Object getValue(int i) {
-		return allValues.get(i);
-	}
-	
-	public short getType(int i) {
-		return (Short) allValueTypes.get(i);
-	}
-	
-	public int size() {
-		return allValues.size();
-	}
-	
-	public void setJdbcQuestionMarks(PreparedStatement stmt) throws SQLException {
-		for (int i = 1; i <= allValues.size(); i++) {
-			Object value = allValues.get(i -1 );
-			short type = (Short) allValueTypes.get(i -1);
+	public static void setJdbcQuestionMarks(JdbcAggregator agg,PreparedStatement stmt) throws SQLException {
+		for (int i = 1; i <= agg.size(); i++) {
+			Object value = agg.getValue(i -1 );
+			short type = (Short) agg.getType(i -1);
 			try {
 				switch (type) {
 					case ValueTypes.STRING:

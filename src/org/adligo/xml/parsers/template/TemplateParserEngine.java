@@ -69,6 +69,10 @@ public class TemplateParserEngine {
     return r;
   }
 
+  static public String parse(EngineInput in)   {
+	  in.validate();
+	  return parse(in.getTemplate(), in.getParams());
+  }
 
   static private String parseInternal(Template template, I_TemplateParams params) {
     StringBuilder sb = new StringBuilder();

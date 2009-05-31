@@ -32,19 +32,19 @@ import org.adligo.models.params.client.ValueTypes;
  * @author scott
  *
  */
-public class JdbcParamDecorator extends ParamDecorator implements I_TemplateParams {
+public class JdbcParamsDecorator extends ParamDecorator implements I_TemplateParams {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static final Log log = LogFactory.getLog(JdbcParamDecorator.class);
+	private static final Log log = LogFactory.getLog(JdbcParamsDecorator.class);
 	
-	private JdbcParamValueAggregator aggregator;
+	private JdbcAggregator aggregator;
 	private Set<I_Operators> operators;
 	
-	public JdbcParamDecorator(I_TemplateParams in, Set<I_Operators> allowedOperators,
-			JdbcParamValueAggregator  p_aggregator) {
+	public JdbcParamsDecorator(I_TemplateParams in, Set<I_Operators> allowedOperators,
+			JdbcAggregator  p_aggregator) {
 		super(in);
 		operators = allowedOperators;
 		aggregator = p_aggregator;
@@ -71,6 +71,9 @@ public class JdbcParamDecorator extends ParamDecorator implements I_TemplatePara
 	@Override
 	public I_Operators getOperators() {
 		I_Operators paramOperators = super.getOperators();
+		if (log.isDebugEnabled()) {
+			log.debug("checking operators " + paramOperators);
+		}
 		if (paramOperators != null) {
 			if ( !operators.contains(paramOperators)) {
 				StringBuilder message = new StringBuilder();
@@ -96,7 +99,7 @@ public class JdbcParamDecorator extends ParamDecorator implements I_TemplatePara
 
 	@Override
 	public I_TemplateParams getNestedParams() {
-		return new JdbcParamDecorator(super.getNestedParams(), operators,
+		return new JdbcParamsDecorator(super.getNestedParams(), operators,
 				aggregator);
 	}
 	
