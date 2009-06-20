@@ -78,7 +78,6 @@ public class ParamTagElement extends TemplateElement {
        * then rewrite the TemplateParserEngine
        */
     private void addNonParamString(String s) {
-      String original = s;
       if (s.length() == 0) {
         return;
       }

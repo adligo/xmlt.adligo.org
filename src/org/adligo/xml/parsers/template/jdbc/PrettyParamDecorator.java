@@ -1,6 +1,5 @@
 package org.adligo.xml.parsers.template.jdbc;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.adligo.models.params.client.I_TemplateParams;

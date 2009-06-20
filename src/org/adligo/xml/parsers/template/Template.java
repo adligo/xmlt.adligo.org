@@ -39,8 +39,7 @@ List elements  = new ArrayList(); //
   }
 
   private void parseInternal(String s) {
-    int iEndParamAfterParse = 0;
-
+    
     if (s == null) {
       log.warn("The string argument passed to Template.parseInternal was null");
       return;
@@ -50,7 +49,6 @@ List elements  = new ArrayList(); //
     }
 
     int [] iTagIndexes= Parser.getTagIndexs(s, Tags.PARAM_HEADER, ">");
-    int iEndOfHeader = iTagIndexes[1];
     if (iTagIndexes [0] == -1) {
       // no tag simply a string template with out param tags
       elements.add(TemplateElement.NewTemplateElement(s));
@@ -70,7 +68,6 @@ List elements  = new ArrayList(); //
                  " slashes inside the param ender tag" +
                  "\n ie. the param ender tag should be </param> and not <param/>");
       }
-      String sAfterTag = s.substring(iTagIndexes[1], s.length());
       // get the tag without the header and ender tags
       String sParamTag = s.substring(iTagIndexes[0], iTagIndexes[1]);
       ParamTagElement pte = new ParamTagElement(sParamTag);

@@ -1,19 +1,13 @@
 package org.adligo.xml.parsers.template.jdbc;
 
 import java.security.InvalidParameterException;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
-import org.adligo.i.util.client.ArrayCollection;
 import org.adligo.models.params.client.I_Operators;
 import org.adligo.models.params.client.I_TemplateParams;
 import org.adligo.models.params.client.ParamDecorator;
-import org.adligo.models.params.client.ValueTypes;
 
 /**
  * this simply replaces all the dynamic parameter values with 

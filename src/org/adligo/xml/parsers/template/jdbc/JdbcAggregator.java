@@ -12,6 +12,9 @@ public class JdbcAggregator {
 	private ArrayCollection allValueTypes = new ArrayCollection();
 	
 	public void addValue(short type, Object o) {
+		if (log.isDebugEnabled()) {
+			log.debug("adding value " + type + "," + o);
+		}
 		allValueTypes.add(type);
 		allValues.add(o);
 	}

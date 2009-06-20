@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.adligo.models.params.client.I_Operators;
-import org.adligo.models.params.client.Operators;
 import org.adligo.models.params.client.SqlOperators;
 
 public class BaseSqlOperators {
