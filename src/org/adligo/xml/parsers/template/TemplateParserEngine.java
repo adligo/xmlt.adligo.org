@@ -12,6 +12,7 @@ package org.adligo.xml.parsers.template;
  */
 import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
+import org.adligo.i.log.client.LogPlatform;
 import org.adligo.j2se.util.J2SEPlatform;
 import org.adligo.models.params.client.I_Operators;
 import org.adligo.models.params.client.I_TemplateParams;
@@ -20,16 +21,6 @@ import org.adligo.models.params.client.I_TemplateParams;
 public class TemplateParserEngine {
   static final Log log = LogFactory.getLog(TemplateParserEngine.class);
 
-  static {
-	  try {
-		  //init the wrappers for params and
-		  // the adligo log system, this package is 
-		  // server or fat client (2teir only)
-	  	J2SEPlatform.init();
-	  } catch (Exception x) {
-		  x.printStackTrace();
-	  }
-  }
   /**
    * This takes a string of a particular template and uses the information
    * in the I_TemplateParams object to replace the param tags with runtime info.
