@@ -46,6 +46,7 @@ import java.util.List;
 import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
 import org.adligo.models.params.client.Parser;
+import org.adligo.models.params.client.XMLBuilder;
 
 @SuppressWarnings("unchecked")
 public class Templates {
@@ -104,6 +105,22 @@ public class Templates {
    *
    */
   public synchronized void parseResource(String sFileName) {
+	  parseResourcePrivate(sFileName, XMLBuilder.UNIX_LINE_FEED);
+  }
+  
+  /**
+   * see method with same name and no line feed,
+   * which was added to fix issues with cvs/tests and textRunner
+   * @param sFileName
+   * @param lineFeed something from XMLBuilder 
+   *   for instance XMLBuilder.DOS_LINE_FEED
+   *   so you can prety print your template
+   */
+  public synchronized void parseResource(String sFileName, String lineFeed) {
+	  parseResourcePrivate(sFileName, lineFeed);
+  }
+  
+  private void parseResourcePrivate(String sFileName, String lineFeed) {
     if (log.isDebugEnabled()) {
       log.debug(" parseingResource " + sFileName);
     }
@@ -115,7 +132,14 @@ public class Templates {
         byte b[] = new byte[1];
 
         while ( is.read(b) != -1 ) {
-            str.append(new String(b));
+        	while ( is.read(b) != -1 ) {
+        		//strip line feeds 
+            	if (b[0] == '\n') {
+            		str.append(lineFeed);
+            	} else if (b[0] != '\r') {
+            		str.append(new String(b));
+            	}
+            }
         }
         is.close();
         parseContent(new String(str));
