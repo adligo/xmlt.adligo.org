@@ -12,8 +12,6 @@ package org.adligo.xml.parsers.template;
  */
 import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
-import org.adligo.i.log.client.LogPlatform;
-import org.adligo.j2se.util.J2SEPlatform;
 import org.adligo.models.params.client.I_Operators;
 import org.adligo.models.params.client.I_TemplateParams;
 
