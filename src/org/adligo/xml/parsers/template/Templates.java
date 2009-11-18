@@ -60,6 +60,20 @@ public class Templates {
    */
   public Templates() {}
   /**
+   * 
+   * @param sFileName
+   * @param isResource
+   */
+  public Templates(String sFileName, boolean isResource) {
+	    this();
+	    if (isResource) {
+	    	parseResource(sFileName);
+	    } else {
+	    	parseFile(sFileName);
+	    }
+  }
+
+  /**
    * Same as Default Constructor but also calls parse File
    * @param String s = the file to be parsed where s is the full path and file name
    */
