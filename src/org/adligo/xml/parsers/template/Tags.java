@@ -2,7 +2,6 @@ package org.adligo.xml.parsers.template;
 
 /**
  * Description:  This holds the tags and attributes for use in the other classes.
- * Copyright:    GPL http://www.adligo.com/gpl.html
  * Company:      Adligo
  * @author       scott@adligo.com
  * @version 1.3

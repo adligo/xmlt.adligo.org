@@ -5,7 +5,6 @@ package org.adligo.xml.parsers.template;
  * Description:  The TemplateParserEngine is used to parse templates and
  *              replace the param tags with information from the
  *              I_TemplateParams interface.
- * Copyright:    GPL http://www.adligo.com/gpl.html
  * Company:      Adligo
  * @author       scott@adligo.com
  * @version 1.3
