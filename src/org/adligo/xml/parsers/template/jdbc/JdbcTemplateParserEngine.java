@@ -19,6 +19,7 @@ public class JdbcTemplateParserEngine {
 		  PreparedStatement stmt = values.getConnection().prepareStatement(sqlWithQuestionMarks);
 		  JdbcPopulator.setJdbcQuestionMarks(aggregator, stmt);
 		  ResultSet result = stmt.executeQuery();
+		  stmt.close();
 		  return result;
 	}
 	
@@ -32,6 +33,23 @@ public class JdbcTemplateParserEngine {
 		  String sqlWithQuestionMarks = TemplateParserEngine.parse(values.getTemplate(), jdbcParams);
 		  PreparedStatement stmt = values.getConnection().prepareStatement(sqlWithQuestionMarks);
 		  JdbcPopulator.setJdbcQuestionMarks(aggregator, stmt);
-		  return stmt.execute();
+		  boolean toRet = stmt.execute();
+		  stmt.close();
+		  return toRet;
+	}
+	
+	static public int executeUpdate(JdbcEngineInput values) throws SQLException  {
+		  //does a null check for connection, params, and template
+		  // allowed operators is a internally managed set (never null)
+		  values.validate();
+		  JdbcAggregator aggregator = new JdbcAggregator();
+		  JdbcParamsDecorator jdbcParams =	new JdbcParamsDecorator(values.getParams(), 
+				  values.getAllowedOperators(), aggregator);
+		  String sqlWithQuestionMarks = TemplateParserEngine.parse(values.getTemplate(), jdbcParams);
+		  PreparedStatement stmt = values.getConnection().prepareStatement(sqlWithQuestionMarks);
+		  JdbcPopulator.setJdbcQuestionMarks(aggregator, stmt);
+		  int toRet = stmt.executeUpdate();
+		  stmt.close();
+		  return toRet;
 	}
 }
