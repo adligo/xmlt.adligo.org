@@ -8,7 +8,7 @@ import org.adligo.xml.parsers.template.TemplateParserEngine;
 
 public class JdbcTemplateParserEngine {
 
-	static public ResultSet query(JdbcEngineInput values) throws SQLException  {
+	static public JdbcQueryResult query(JdbcEngineInput values) throws SQLException  {
 		  //does a null check for connection, params, and template
 		  // allowed operators is a internally managed set (never null)
 		  values.validate();
@@ -19,10 +19,9 @@ public class JdbcTemplateParserEngine {
 		  PreparedStatement stmt = values.getConnection().prepareStatement(sqlWithQuestionMarks);
 		  JdbcPopulator.setJdbcQuestionMarks(aggregator, stmt);
 		  ResultSet result = stmt.executeQuery();
-		  stmt.close();
-		  return result;
+		  return new JdbcQueryResult(stmt, result);
 	}
-	
+
 	static public boolean execute(JdbcEngineInput values) throws SQLException  {
 		  //does a null check for connection, params, and template
 		  // allowed operators is a internally managed set (never null)
@@ -37,7 +36,7 @@ public class JdbcTemplateParserEngine {
 		  stmt.close();
 		  return toRet;
 	}
-	
+
 	static public int executeUpdate(JdbcEngineInput values) throws SQLException  {
 		  //does a null check for connection, params, and template
 		  // allowed operators is a internally managed set (never null)
@@ -52,4 +51,6 @@ public class JdbcTemplateParserEngine {
 		  stmt.close();
 		  return toRet;
 	}
+	
+	
 }
