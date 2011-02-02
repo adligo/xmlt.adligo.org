@@ -64,7 +64,7 @@ public class Templates {
    * @param sFileName
    * @param isResource
    */
-  public Templates(String sFileName, boolean isResource) throws IOException {
+  public Templates(String sFileName, boolean isResource) {
 	    this();
 	    if (isResource) {
 	    	parseResource(sFileName);
@@ -77,7 +77,7 @@ public class Templates {
    * Same as Default Constructor but also calls parse File
    * @param String s = the file to be parsed where s is the full path and file name
    */
-  public Templates(String sFileName) throws IOException {
+  public Templates(String sFileName) {
     this();
     parseFile(sFileName);
   }
@@ -87,7 +87,7 @@ public class Templates {
    * passing in the text from the xml file.
    * Note: You must supply the complete relative path in the sFileName argument!
    */
-  public synchronized void parseFile(String sFileName)  throws IOException {
+  public synchronized void parseFile(String sFileName) {
     if (log.isDebugEnabled()) {
       log.debug(" parseingFile " + sFileName);
     }
@@ -101,7 +101,7 @@ public class Templates {
         in.close();
         parseContent(content);
       }catch(java.io.IOException e){
-    	  IOException toThrow = new IOException("Cannot access file " + sFileName);
+    	  IllegalArgumentException toThrow = new IllegalArgumentException("Cannot access file " + sFileName);
     	  toThrow.initCause(e);
     	  throw toThrow;
       }
@@ -120,7 +120,7 @@ public class Templates {
    * /com/adligo/ui/treefinder/Treefinder_HTML.xml
    *
    */
-  public synchronized void parseResource(String sFileName) throws IOException {
+  public synchronized void parseResource(String sFileName) {
 	  parseResourcePrivate(sFileName, XMLBuilder.UNIX_LINE_FEED);
   }
   
@@ -132,11 +132,11 @@ public class Templates {
    *   for instance XMLBuilder.DOS_LINE_FEED
    *   so you can prety print your template
    */
-  public synchronized void parseResource(String sFileName, String lineFeed) throws IOException {
+  public synchronized void parseResource(String sFileName, String lineFeed) {
 	  parseResourcePrivate(sFileName, lineFeed);
   }
   
-  private void parseResourcePrivate(String sFileName, String lineFeed) throws IOException {
+  private void parseResourcePrivate(String sFileName, String lineFeed) {
     if (log.isDebugEnabled()) {
       log.debug(" parseingResource " + sFileName);
     }
@@ -160,12 +160,12 @@ public class Templates {
         is.close();
         parseContent(new String(str));
       } catch (StringIndexOutOfBoundsException e) {
-    	  IOException toThrow = new IOException(
+    	  RuntimeException toThrow = new RuntimeException(
     			  THERE_IS_A_BUG_IN_THE_TEMPLATE_PARSER_PLEASE_SEND_YOUR_FILE_TO_SCOTT_ADLIGO_COM);
     	  toThrow.initCause(e);
     	  throw toThrow;
       } catch (IOException e) {
-    	  IOException toThrow = new IOException(
+    	  IllegalArgumentException toThrow = new IllegalArgumentException(
     			  THERE_WAS_A_PROBLEM_PARSING_OR_COULD_NOT_FIND_RESOURCE + sFileName);
     	  toThrow.initCause(e);
     	  throw toThrow;
