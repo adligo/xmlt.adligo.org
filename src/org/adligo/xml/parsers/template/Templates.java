@@ -47,6 +47,7 @@ import org.adligo.models.params.client.Parser;
 import org.adligo.models.params.client.XMLBuilder;
 
 public class Templates {
+  public static final String CANNOT_ACCESS_FILE = "Cannot access file ";
   public static final String THERE_WAS_A_PROBLEM_PARSING_OR_COULD_NOT_FIND_RESOURCE = "There was a problem parsing or could not find resource ";
   public static final String THERE_IS_A_BUG_IN_THE_TEMPLATE_PARSER_PLEASE_SEND_YOUR_FILE_TO_SCOTT_ADLIGO_COM = "There is a bug in the template parser, please send your file to scott@adligo.com";
   private static final Log log = LogFactory.getLog(Templates.class);
@@ -101,7 +102,7 @@ public class Templates {
         in.close();
         parseContent(content);
       }catch(java.io.IOException e){
-    	  IllegalArgumentException toThrow = new IllegalArgumentException("Cannot access file " + sFileName);
+    	  IllegalArgumentException toThrow = new IllegalArgumentException(CANNOT_ACCESS_FILE + sFileName);
     	  toThrow.initCause(e);
     	  throw toThrow;
       }
@@ -143,6 +144,11 @@ public class Templates {
       try {
         Class<?> c = this.getClass();
         URL r = c.getResource(sFileName);
+        if (r == null) {
+        	 IllegalArgumentException toThrow = new IllegalArgumentException(
+       			  THERE_WAS_A_PROBLEM_PARSING_OR_COULD_NOT_FIND_RESOURCE + sFileName);
+        	 throw toThrow;
+        }
         InputStream is = r.openStream();
         StringBuffer str = new StringBuffer();
         byte b[] = new byte[1];
