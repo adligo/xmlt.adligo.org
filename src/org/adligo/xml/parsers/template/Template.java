@@ -13,7 +13,6 @@ import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
 import org.adligo.models.params.client.Parser;
 
-@SuppressWarnings("unchecked")
 public class Template {
   static Log log = LogFactory.getLog(Template.class);
   /*
@@ -21,7 +20,7 @@ public class Template {
    * and ParamTag (nested Template object) elements
    */
   
-List elements  = new ArrayList(); //
+  List<Object> elements  = new ArrayList<Object>(); //
  
 
   /**

@@ -33,6 +33,7 @@ package org.adligo.xml.parsers.template;
  */
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -45,9 +46,11 @@ import org.adligo.i.log.client.LogFactory;
 import org.adligo.models.params.client.Parser;
 import org.adligo.models.params.client.XMLBuilder;
 
-@SuppressWarnings("unchecked")
 public class Templates {
-  Log log = LogFactory.getLog(Templates.class);
+  public static final String THERE_WAS_A_PROBLEM_PARSING_OR_COULD_NOT_FIND_RESOURCE = "There was a problem parsing or could not find resource ";
+  public static final String THERE_IS_A_BUG_IN_THE_TEMPLATE_PARSER_PLEASE_SEND_YOUR_FILE_TO_SCOTT_ADLIGO_COM = "There is a bug in the template parser, please send your file to scott@adligo.com";
+  private static final Log log = LogFactory.getLog(Templates.class);
+  
   String name = new String(""); //used to manage several of these objects
   private List<String> templateNames = new ArrayList<String>();
   private HashMap<String,Template> templates = new HashMap<String,Template>();
@@ -61,7 +64,7 @@ public class Templates {
    * @param sFileName
    * @param isResource
    */
-  public Templates(String sFileName, boolean isResource) {
+  public Templates(String sFileName, boolean isResource) throws IOException {
 	    this();
 	    if (isResource) {
 	    	parseResource(sFileName);
@@ -74,7 +77,7 @@ public class Templates {
    * Same as Default Constructor but also calls parse File
    * @param String s = the file to be parsed where s is the full path and file name
    */
-  public Templates(String sFileName) {
+  public Templates(String sFileName) throws IOException {
     this();
     parseFile(sFileName);
   }
@@ -84,7 +87,7 @@ public class Templates {
    * passing in the text from the xml file.
    * Note: You must supply the complete relative path in the sFileName argument!
    */
-  public synchronized void parseFile(String sFileName) {
+  public synchronized void parseFile(String sFileName)  throws IOException {
     if (log.isDebugEnabled()) {
       log.debug(" parseingFile " + sFileName);
     }
@@ -98,7 +101,9 @@ public class Templates {
         in.close();
         parseContent(content);
       }catch(java.io.IOException e){
-        log.error("Cannot access file " + sFileName, e);
+    	  IOException toThrow = new IOException("Cannot access file " + sFileName);
+    	  toThrow.initCause(e);
+    	  throw toThrow;
       }
       name = sFileName.substring(sFileName.lastIndexOf(
               System.getProperty("file.separator")) + 1, sFileName.length());
@@ -115,7 +120,7 @@ public class Templates {
    * /com/adligo/ui/treefinder/Treefinder_HTML.xml
    *
    */
-  public synchronized void parseResource(String sFileName) {
+  public synchronized void parseResource(String sFileName) throws IOException {
 	  parseResourcePrivate(sFileName, XMLBuilder.UNIX_LINE_FEED);
   }
   
@@ -127,16 +132,16 @@ public class Templates {
    *   for instance XMLBuilder.DOS_LINE_FEED
    *   so you can prety print your template
    */
-  public synchronized void parseResource(String sFileName, String lineFeed) {
+  public synchronized void parseResource(String sFileName, String lineFeed) throws IOException {
 	  parseResourcePrivate(sFileName, lineFeed);
   }
   
-  private void parseResourcePrivate(String sFileName, String lineFeed) {
+  private void parseResourcePrivate(String sFileName, String lineFeed) throws IOException {
     if (log.isDebugEnabled()) {
       log.debug(" parseingResource " + sFileName);
     }
       try {
-        Class c = this.getClass();
+        Class<?> c = this.getClass();
         URL r = c.getResource(sFileName);
         InputStream is = r.openStream();
         StringBuffer str = new StringBuffer();
@@ -155,10 +160,15 @@ public class Templates {
         is.close();
         parseContent(new String(str));
       } catch (StringIndexOutOfBoundsException e) {
-    	  log.error("There is a bug in the template parser, please send your file to bugs@adligo.com");
-    	  log.error(e.getMessage(), e);
-      } catch (Exception e) {
-          log.error("problem parsing or could not find resource " + sFileName, e);
+    	  IOException toThrow = new IOException(
+    			  THERE_IS_A_BUG_IN_THE_TEMPLATE_PARSER_PLEASE_SEND_YOUR_FILE_TO_SCOTT_ADLIGO_COM);
+    	  toThrow.initCause(e);
+    	  throw toThrow;
+      } catch (IOException e) {
+    	  IOException toThrow = new IOException(
+    			  THERE_WAS_A_PROBLEM_PARSING_OR_COULD_NOT_FIND_RESOURCE + sFileName);
+    	  toThrow.initCause(e);
+    	  throw toThrow;
       }
       name = sFileName.substring(sFileName.lastIndexOf("/") + 1, sFileName.length());
   }

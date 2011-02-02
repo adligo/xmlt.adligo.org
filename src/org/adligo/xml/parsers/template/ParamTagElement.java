@@ -14,7 +14,6 @@ import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
 import org.adligo.models.params.client.Parser;
 
-@SuppressWarnings("unchecked")
 public class ParamTagElement extends TemplateElement {
     static Log log = LogFactory.getLog(ParamTagElement.class);
     String sName = "";
@@ -23,7 +22,7 @@ public class ParamTagElement extends TemplateElement {
     String sDelimiter = "";
     String sSeparator = "";
     String sNestedSeparator = "";
-    List elements  = new ArrayList(); // A list of String elements
+    List<Object> elements  = new ArrayList<Object>(); // A list of String elements
                                     // and ParamTag (nestedTemplateobject) elements
     /**
      * This method should take a complete param tag like
