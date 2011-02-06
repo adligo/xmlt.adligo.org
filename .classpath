@@ -5,6 +5,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/i_log"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/i_util"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/j2se_util"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jse_util"/>
 	<classpathentry kind="output" path="classes_e"/>
 </classpath>
