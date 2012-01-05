@@ -108,10 +108,14 @@ public class ParamTagElement extends TemplateElement {
     			  // its a operator tag
     			  
     			  String id = Parser.getAttribute(nextOperatorTagIndexes, s, Tags.ID_ATTRIBUTE);
-    			  if (id != null) {
-    			  	String operatorValue = s.substring(nextOperatorTagIndexes[0], nextOperatorTagIndexes[1]);
+    			  if (id == null) {
+    				String operatorValue = s.substring(nextOperatorTagIndexes[0], nextOperatorTagIndexes[1]);
+      			  	OperatorTagElement operator = new OperatorTagElement(operatorValue);
+      			  	elements.add(operator);
+    		  	  } else {
+    		  		String operatorValue = s.substring(nextOperatorTagIndexes[0], nextOperatorTagIndexes[1]);
     			  	OperatorTagElement operator = new OperatorTagElement(operatorValue, new Integer(id));
-    			  	elements.add(operator);
+    			  	elements.add(operator);  
     		  	  }
     			  s = s.substring(nextOperatorTagIndexes[1], s.length());
     		  } 
