@@ -2,7 +2,9 @@ package org.adligo.xml.parsers.template;
 
 /**
  * Title:
- * Description:
+ * Description:  A Immutable class (for usage among multiple threads)
+ * 		that represents a param tag from the xml template
+ * 
  * Company:      Adligo
  * @author       scott@adligo.com
  * @version 1.0
@@ -15,14 +17,14 @@ import org.adligo.i.log.client.LogFactory;
 import org.adligo.models.params.client.Parser;
 
 public class ParamTagElement extends TemplateElement {
-    static Log log = LogFactory.getLog(ParamTagElement.class);
-    String sName = "";
-    String sPre = "";
-    String sPost = "";
-    String sDelimiter = "";
-    String sSeparator = "";
-    String sNestedSeparator = "";
-    List<Object> elements  = new ArrayList<Object>(); // A list of String elements
+    private static Log log = LogFactory.getLog(ParamTagElement.class);
+    private String sName = "";
+    private String sPre = "";
+    private String sPost = "";
+    private String sDelimiter = "";
+    private String sSeparator = "";
+    private String sNestedSeparator = "";
+    private List<Object> elements  = new ArrayList<Object>(); // A list of String elements
                                     // and ParamTag (nestedTemplateobject) elements
     /**
      * This method should take a complete param tag like
@@ -44,13 +46,13 @@ public class ParamTagElement extends TemplateElement {
       this.parseInternal(s.substring(iTagHeaderIndexes[1], s.length() - Tags.PARAM_ENDER.length()));
 
     }
-    void setName(String s) { sName = nonNull(s); }
-    void setPre(String s) { sPre = nonNull(s); }
-    void setPost(String s) { sPost = nonNull(s); }
-    void setDelimiter(String s) {  sDelimiter = nonNull(s); }
-    void setSeparator(String s) { sSeparator = nonNull(s); }
-    void setNestedSeparator(String s) { sNestedSeparator = nonNull(s); }
-    String nonNull(String s) {
+    private void setName(String s) { sName = nonNull(s); }
+    private void setPre(String s) { sPre = nonNull(s); }
+    private void setPost(String s) { sPost = nonNull(s); }
+    private void setDelimiter(String s) {  sDelimiter = nonNull(s); }
+    private void setSeparator(String s) { sSeparator = nonNull(s); }
+    private void setNestedSeparator(String s) { sNestedSeparator = nonNull(s); }
+    private String nonNull(String s) {
       if (s == null) {
         return "";
       }
@@ -104,14 +106,13 @@ public class ParamTagElement extends TemplateElement {
     			  s = s.substring(Tags.VALUE.length(), s.length());
     		  } else if (nextOperatorTagIndexes[0] == 0) {
     			  // its a operator tag
-    			  OperatorTagElement operator = new OperatorTagElement();
+    			  
     			  String id = Parser.getAttribute(nextOperatorTagIndexes, s, Tags.ID_ATTRIBUTE);
     			  if (id != null) {
-    				  operator.setId(new Integer(id));
-    			  }
-    			  String operatorValue = s.substring(nextOperatorTagIndexes[0], nextOperatorTagIndexes[1]);
-    			  operator.setStringValue(operatorValue);
-    			  elements.add(operator);
+    			  	String operatorValue = s.substring(nextOperatorTagIndexes[0], nextOperatorTagIndexes[1]);
+    			  	OperatorTagElement operator = new OperatorTagElement(operatorValue, new Integer(id));
+    			  	elements.add(operator);
+    		  	  }
     			  s = s.substring(nextOperatorTagIndexes[1], s.length());
     		  } 
     	  } else {

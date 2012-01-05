@@ -1,6 +1,8 @@
 package org.adligo.xml.parsers.template;
 
 /**
+ * a immutable class that represents freform text inside of the xml
+ * 
  * Title:
  * Description:
  * Company:      Adligo
@@ -9,12 +11,15 @@ package org.adligo.xml.parsers.template;
  */
 
 public class TemplateElement {
-  String sStringValue = "";
-  int iType = ElementTypes.STRING;
+  private String sStringValue = "";
+  private int iType = ElementTypes.STRING;
 
   public TemplateElement() {}
-
-  protected void setStringValue(String s) {
+  public TemplateElement(String value) {
+	  sStringValue = value;
+  }
+  
+  private void setStringValue(String s) {
     sStringValue = new String(s);
   }
 
@@ -26,7 +31,7 @@ public class TemplateElement {
     return sStringValue;
   }
   public String toString() { return getStringValue(); }
-  void setType(int i) { iType = i; }
+  private void setType(int i) { iType = i; }
 
   public static TemplateElement NewTemplateElement(String s) {
     TemplateElement te = new TemplateElement();

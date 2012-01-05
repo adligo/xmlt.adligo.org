@@ -13,14 +13,22 @@ import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
 import org.adligo.models.params.client.Parser;
 
+/**
+ * immutable (so the instance may be shared by multiple threads) 
+ * class that represents the xml of the template stored
+ * in the computers RAM
+ * 
+ * @author scott
+ *
+ */
 public class Template {
-  static Log log = LogFactory.getLog(Template.class);
+  private static Log log = LogFactory.getLog(Template.class);
   /*
    *  A list of String elements
    * and ParamTag (nested Template object) elements
    */
   
-  List<Object> elements  = new ArrayList<Object>(); //
+  private List<Object> elements  = new ArrayList<Object>(); //
  
 
   /**
