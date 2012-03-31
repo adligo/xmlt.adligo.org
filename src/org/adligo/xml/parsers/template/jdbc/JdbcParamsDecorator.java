@@ -34,11 +34,11 @@ public class JdbcParamsDecorator extends ParamDecorator implements I_TemplatePar
 
 	private static final Log log = LogFactory.getLog(JdbcParamsDecorator.class);
 	
-	private JdbcAggregator aggregator;
+	private QueryParameterAggregator aggregator;
 	private Set<I_Operators> operators;
 	
 	public JdbcParamsDecorator(I_TemplateParams in, Set<I_Operators> allowedOperators,
-			JdbcAggregator  p_aggregator) {
+			QueryParameterAggregator  p_aggregator) {
 		super(in);
 		operators = allowedOperators;
 		aggregator = p_aggregator;

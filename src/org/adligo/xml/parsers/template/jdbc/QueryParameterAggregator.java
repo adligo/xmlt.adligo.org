@@ -4,8 +4,18 @@ import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
 import org.adligo.i.util.client.ArrayCollection;
 
-public class JdbcAggregator {
-	private static final Log log = LogFactory.getLog(JdbcAggregator.class);
+/**
+ * this class simply flattens out all the parameters from the 
+ * tree structure of the Params class so 
+ * sequential processing can occure during 
+ * ? replcement for Jdbc prepaired statements 
+ * (or :1, :2 replacement for JPQL)
+ * 
+ * @author scott
+ *
+ */
+public class QueryParameterAggregator {
+	private static final Log log = LogFactory.getLog(QueryParameterAggregator.class);
 	
 	
 	private ArrayCollection allValues = new ArrayCollection();

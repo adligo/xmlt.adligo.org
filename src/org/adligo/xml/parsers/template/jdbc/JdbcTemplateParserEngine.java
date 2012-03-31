@@ -12,7 +12,7 @@ public class JdbcTemplateParserEngine {
 		  //does a null check for connection, params, and template
 		  // allowed operators is a internally managed set (never null)
 		  values.validate();
-		  JdbcAggregator aggregator = new JdbcAggregator();
+		  QueryParameterAggregator aggregator = new QueryParameterAggregator();
 		  JdbcParamsDecorator jdbcParams =	new JdbcParamsDecorator(values.getParams(), 
 				  values.getAllowedOperators(), aggregator);
 		  String sqlWithQuestionMarks = TemplateParserEngine.parse(values.getTemplate(), jdbcParams);
@@ -26,7 +26,7 @@ public class JdbcTemplateParserEngine {
 		  //does a null check for connection, params, and template
 		  // allowed operators is a internally managed set (never null)
 		  values.validate();
-		  JdbcAggregator aggregator = new JdbcAggregator();
+		  QueryParameterAggregator aggregator = new QueryParameterAggregator();
 		  JdbcParamsDecorator jdbcParams =	new JdbcParamsDecorator(values.getParams(), 
 				  values.getAllowedOperators(), aggregator);
 		  String sqlWithQuestionMarks = TemplateParserEngine.parse(values.getTemplate(), jdbcParams);
@@ -41,7 +41,7 @@ public class JdbcTemplateParserEngine {
 		  //does a null check for connection, params, and template
 		  // allowed operators is a internally managed set (never null)
 		  values.validate();
-		  JdbcAggregator aggregator = new JdbcAggregator();
+		  QueryParameterAggregator aggregator = new QueryParameterAggregator();
 		  JdbcParamsDecorator jdbcParams =	new JdbcParamsDecorator(values.getParams(), 
 				  values.getAllowedOperators(), aggregator);
 		  String sqlWithQuestionMarks = TemplateParserEngine.parse(values.getTemplate(), jdbcParams);

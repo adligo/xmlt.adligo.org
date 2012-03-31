@@ -11,7 +11,7 @@ import org.adligo.models.params.client.ValueTypes;
 public class JdbcPopulator {
 	private static final Log log = LogFactory.getLog(JdbcPopulator.class);
 	
-	public static void setJdbcQuestionMarks(JdbcAggregator agg,PreparedStatement stmt) throws SQLException {
+	public static void setJdbcQuestionMarks(QueryParameterAggregator agg,PreparedStatement stmt) throws SQLException {
 		for (int i = 1; i <= agg.size(); i++) {
 			Object value = agg.getValue(i -1 );
 			short type = (Short) agg.getType(i -1);
