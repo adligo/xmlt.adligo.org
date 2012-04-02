@@ -84,7 +84,7 @@ public class JdbcParamsDecorator extends ParamDecorator implements I_TemplatePar
 					}
 				}
 				message.append(" or you could be in the middle of" +
-						" a sql injection attack!");
+						" a query injection attack!");
 				throw new InvalidParameterException(message.toString());
 			}
 		}

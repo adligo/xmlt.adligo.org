@@ -55,7 +55,8 @@ public class Templates {
   String name = new String(""); //used to manage several of these objects
   private List<String> templateNames = new ArrayList<String>();
   private HashMap<String,Template> templates = new HashMap<String,Template>();
-
+  private boolean parsed = false; 
+  
   /**
    * Default Constructor
    */
@@ -72,6 +73,7 @@ public class Templates {
 	    } else {
 	    	parseFile(sFileName);
 	    }
+	    parsed = true;
   }
 
   /**
@@ -81,6 +83,7 @@ public class Templates {
   public Templates(String sFileName) {
     this();
     parseFile(sFileName);
+    parsed = true;
   }
 
   /**
@@ -108,6 +111,7 @@ public class Templates {
       }
       name = sFileName.substring(sFileName.lastIndexOf(
               System.getProperty("file.separator")) + 1, sFileName.length());
+      parsed = true;
   }
 
 
@@ -123,6 +127,7 @@ public class Templates {
    */
   public synchronized void parseResource(String sFileName) {
 	  parseResourcePrivate(sFileName, XMLBuilder.UNIX_LINE_FEED);
+	  parsed = true;
   }
   
   /**
@@ -135,6 +140,7 @@ public class Templates {
    */
   public synchronized void parseResource(String sFileName, String lineFeed) {
 	  parseResourcePrivate(sFileName, lineFeed);
+	  parsed = true;
   }
   
   private void parseResourcePrivate(String sFileName, String lineFeed) {
@@ -244,4 +250,8 @@ public class Templates {
   
   public void setName(String s) { name = s;}
   public String getName() { return name;}
+  
+	public boolean isParsed() {
+		return parsed;
+	}
 }
