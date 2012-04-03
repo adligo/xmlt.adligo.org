@@ -38,15 +38,17 @@ public class TemplateAsScriptExecutor {
 		assert templates != null;
 		assert templates.isParsed();
 		
-		JdbcEngineInput values = new JdbcEngineInput();
-		values.setParams(new Param());
-		values.setConnection(connection);
+		
 		connection.setAutoCommit(true);
 		
 		Iterator<String> names = templates.getTemplateNames();
 		while (names.hasNext()) {
 			String templateName = names.next();
 			Template temp = templates.getTemplate(templateName);
+			
+			JdbcEngineInput values = new JdbcEngineInput();
+			values.setParams(new Param());
+			values.setConnection(connection);
 			values.setTemplate(temp);
 			JdbcTemplateParserEngine.execute(values);
 		}
