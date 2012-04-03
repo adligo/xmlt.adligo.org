@@ -37,5 +37,6 @@ public class InjectionSafeEngineInput extends EngineInput {
 	
 	public void clear() {
 		allowedOperators.clear();
+		super.clear();
 	}
 }

@@ -41,5 +41,8 @@ public class QueryParameterAggregator {
 		return allValues.size();
 	}
 	
-	
+	public void clear() {
+		allValues.clear();
+		allValueTypes.clear();
+	}
 }

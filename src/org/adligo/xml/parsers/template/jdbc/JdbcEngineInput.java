@@ -24,4 +24,8 @@ public class JdbcEngineInput extends InjectionSafeEngineInput {
 		this.connection = connection;
 	}
 	
+	public void clear() {
+		connection = null;
+		super.clear();
+	}
 }

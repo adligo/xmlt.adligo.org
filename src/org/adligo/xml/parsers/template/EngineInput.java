@@ -35,4 +35,9 @@ public class EngineInput {
 		validate(getClass());
 		return true;
 	}
+	
+	public void clear() {
+		template = null;
+		params = null;
+	}
 }

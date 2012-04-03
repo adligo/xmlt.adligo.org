@@ -1,5 +1,6 @@
 package org.adligo.xml.parsers.template.jdbc;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,10 +17,18 @@ public class JdbcTemplateParserEngine {
 		  JdbcParamsDecorator jdbcParams =	new JdbcParamsDecorator(values.getParams(), 
 				  values.getAllowedOperators(), aggregator);
 		  String sqlWithQuestionMarks = TemplateParserEngine.parse(values.getTemplate(), jdbcParams);
-		  PreparedStatement stmt = values.getConnection().prepareStatement(sqlWithQuestionMarks);
-		  JdbcPopulator.setJdbcQuestionMarks(aggregator, stmt);
-		  ResultSet result = stmt.executeQuery();
-		  return new JdbcQueryResult(stmt, result);
+		  jdbcParams.clear();
+		  Connection conn = values.getConnection();
+		  values.clear();
+		  
+		  PreparedStatement stmt = conn.prepareStatement(sqlWithQuestionMarks);
+		  try {
+			  JdbcPopulator.setJdbcQuestionMarks(aggregator, stmt);
+			  ResultSet result = stmt.executeQuery();
+			  return new JdbcQueryResult(stmt, result);
+		  } finally {
+			  aggregator.clear();
+		  }
 	}
 
 	static public boolean execute(JdbcEngineInput values) throws SQLException  {
@@ -30,11 +39,23 @@ public class JdbcTemplateParserEngine {
 		  JdbcParamsDecorator jdbcParams =	new JdbcParamsDecorator(values.getParams(), 
 				  values.getAllowedOperators(), aggregator);
 		  String sqlWithQuestionMarks = TemplateParserEngine.parse(values.getTemplate(), jdbcParams);
-		  PreparedStatement stmt = values.getConnection().prepareStatement(sqlWithQuestionMarks);
-		  JdbcPopulator.setJdbcQuestionMarks(aggregator, stmt);
-		  boolean toRet = stmt.execute();
-		  stmt.close();
-		  return toRet;
+		  jdbcParams.clear();
+		  Connection conn = values.getConnection();
+		  values.clear();
+		  PreparedStatement stmt = null;
+		  try {
+			  stmt = conn.prepareStatement(sqlWithQuestionMarks);
+			  
+			  JdbcPopulator.setJdbcQuestionMarks(aggregator, stmt);
+			  
+			  boolean toRet = stmt.execute();
+			  return toRet;
+		  } finally {
+			  if (stmt != null) {
+				  stmt.close();
+			  }
+			  aggregator.clear();
+		  }
 	}
 
 	static public int executeUpdate(JdbcEngineInput values) throws SQLException  {
@@ -45,11 +66,23 @@ public class JdbcTemplateParserEngine {
 		  JdbcParamsDecorator jdbcParams =	new JdbcParamsDecorator(values.getParams(), 
 				  values.getAllowedOperators(), aggregator);
 		  String sqlWithQuestionMarks = TemplateParserEngine.parse(values.getTemplate(), jdbcParams);
-		  PreparedStatement stmt = values.getConnection().prepareStatement(sqlWithQuestionMarks);
-		  JdbcPopulator.setJdbcQuestionMarks(aggregator, stmt);
-		  int toRet = stmt.executeUpdate();
-		  stmt.close();
-		  return toRet;
+		  
+		  jdbcParams.clear();
+		  Connection conn = values.getConnection();
+		  values.clear();
+		  
+		  PreparedStatement stmt = null;
+		  try {
+		  	  stmt = conn.prepareStatement(sqlWithQuestionMarks);
+			  JdbcPopulator.setJdbcQuestionMarks(aggregator, stmt);
+			  int toRet = stmt.executeUpdate();
+			  return toRet;
+		  } finally {
+			  if (stmt != null) {
+				  stmt.close();
+			  }
+			  aggregator.clear();
+		  }
 	}
 	
 	

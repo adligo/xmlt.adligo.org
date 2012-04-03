@@ -1,6 +1,9 @@
 package org.adligo.xml.parsers.template.jdbc;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.adligo.i.log.client.Log;
@@ -35,12 +38,14 @@ public class JdbcParamsDecorator extends ParamDecorator implements I_TemplatePar
 	private static final Log log = LogFactory.getLog(JdbcParamsDecorator.class);
 	
 	private QueryParameterAggregator aggregator;
-	private Set<I_Operators> operators;
+	private Set<I_Operators> operators = new HashSet<I_Operators>();
+	private List<JdbcParamsDecorator> children = new ArrayList<JdbcParamsDecorator>();
 	
 	public JdbcParamsDecorator(I_TemplateParams in, Set<I_Operators> allowedOperators,
 			QueryParameterAggregator  p_aggregator) {
 		super(in);
-		operators = allowedOperators;
+		operators.clear();
+		operators.addAll(allowedOperators);
 		aggregator = p_aggregator;
 	}
 
@@ -93,8 +98,19 @@ public class JdbcParamsDecorator extends ParamDecorator implements I_TemplatePar
 
 	@Override
 	public I_TemplateParams getNestedParams() {
-		return new JdbcParamsDecorator(super.getNestedParams(), operators,
+		JdbcParamsDecorator child =  new JdbcParamsDecorator(super.getNestedParams(), operators,
 				aggregator);
+		children.add(child);
+		return child;
+	}
+	
+	public void clear() {
+		aggregator = null;
+		operators.clear();
+		for (JdbcParamsDecorator child: children) {
+			child.clear();
+		}
+		children.clear();
 	}
 	
 }
