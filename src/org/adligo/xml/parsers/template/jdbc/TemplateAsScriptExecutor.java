@@ -1,6 +1,5 @@
 package org.adligo.xml.parsers.template.jdbc;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -18,26 +17,32 @@ import org.adligo.xml.parsers.template.Templates;
  *
  */
 public class TemplateAsScriptExecutor {
+	public static final String TEMPLATE_AS_SCRIPT_EXECUTOR_REQUIRES_A_TEMPLATES_INSTANCE_WHICH_HAS_BEEN_PARSED = 
+		"TemplateAsScriptExecutor requires a Templates instance which has been parsed";
+	public static final String TEMPLATE_AS_SCRIPT_EXECUTOR_REQUIRES_A_TEMPLATES_INSTANCE = 
+		"TemplateAsScriptExecutor requires a Templates instance";
+	public static final String TEMPLATE_AS_SCRIPT_EXECUTOR_REQUIRES_A_CONNECTION_INSTANCE = 
+		"TemplateAsScriptExecutor requires a Connection instance";
 	private Connection connection;
-	private Templates templates;
+	
 	public Connection getConnection() {
 		return connection;
 	}
 	public void setConnection(Connection connection) {
 		this.connection = connection;
 	}
-	public Templates getTemplates() {
-		return templates;
-	}
-	public void setTemplates(Templates templates) {
-		this.templates = templates;
-	}
 	
-	public void run() throws SQLException {
-		assert connection != null;
-		assert templates != null;
-		assert templates.isParsed();
-		
+	public void run(Templates templates) throws SQLException {
+		if (connection == null) {
+			throw new NullPointerException(TEMPLATE_AS_SCRIPT_EXECUTOR_REQUIRES_A_CONNECTION_INSTANCE);
+		}
+		if (templates == null) {
+			throw new NullPointerException(TEMPLATE_AS_SCRIPT_EXECUTOR_REQUIRES_A_TEMPLATES_INSTANCE);
+		}
+		if (!templates.isParsed()) {
+			throw new IllegalStateException(
+					TEMPLATE_AS_SCRIPT_EXECUTOR_REQUIRES_A_TEMPLATES_INSTANCE_WHICH_HAS_BEEN_PARSED);
+		}
 		
 		connection.setAutoCommit(true);
 		
