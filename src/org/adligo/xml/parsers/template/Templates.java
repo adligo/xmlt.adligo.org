@@ -43,8 +43,8 @@ import java.util.List;
 
 import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
+import org.adligo.models.params.client.I_XMLBuilder;
 import org.adligo.models.params.client.Parser;
-import org.adligo.models.params.client.XMLBuilder;
 
 public class Templates {
   public static final String CANNOT_ACCESS_FILE = "Cannot access file ";
@@ -126,7 +126,7 @@ public class Templates {
    *
    */
   public synchronized void parseResource(String sFileName) {
-	  parseResourcePrivate(sFileName, XMLBuilder.UNIX_LINE_FEED);
+	  parseResourcePrivate(sFileName, I_XMLBuilder.UNIX_LINE_FEED);
 	  parsed = true;
   }
   

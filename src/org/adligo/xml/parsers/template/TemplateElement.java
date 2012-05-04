@@ -1,5 +1,7 @@
 package org.adligo.xml.parsers.template;
 
+import org.adligo.models.params.client.Parser;
+
 /**
  * a immutable class that represents freform text inside of the xml
  * 
@@ -16,11 +18,11 @@ public class TemplateElement {
 
   public TemplateElement() {}
   public TemplateElement(String value) {
-	  sStringValue = value;
+	  sStringValue = Parser.unescapeFromXml(value);
   }
   
   private void setStringValue(String s) {
-    sStringValue = new String(s);
+    sStringValue = Parser.unescapeFromXml(s);
   }
 
   public int getType() { return iType; }

@@ -50,15 +50,18 @@ public class Template {
     if (log.isDebugEnabled()) {
       log.debug("parseInternal \n\n\n" + s + " \n\n\n");
     }
-
+    
     int [] iTagIndexes= Parser.getTagIndexs(s, Tags.PARAM_HEADER, ">");
     if (iTagIndexes [0] == -1) {
       // no tag simply a string template with out param tags
-      elements.add(TemplateElement.NewTemplateElement(s));
+    	String text = Parser.unescapeFromXml(s);
+      elements.add(TemplateElement.NewTemplateElement(text));
     } else {
       //the string has a param tag
       // add the stuff before the tag
-      TemplateElement preHeader = TemplateElement.NewTemplateElement(s.substring(0, iTagIndexes[0]));
+      String teText = s.substring(0, iTagIndexes[0]);
+      teText = Parser.unescapeFromXml(teText);
+      TemplateElement preHeader = TemplateElement.NewTemplateElement(teText);
       if (log.isDebugEnabled()) {
         log.debug("adding element '" + preHeader.getStringValue() + "'\n");
       }
