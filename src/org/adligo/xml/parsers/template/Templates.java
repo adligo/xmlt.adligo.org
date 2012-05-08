@@ -35,16 +35,25 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.CharBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
+import org.adligo.i.util.client.I_Iterator;
+import org.adligo.i.util.client.StringUtils;
 import org.adligo.models.params.client.I_XMLBuilder;
 import org.adligo.models.params.client.Parser;
+import org.adligo.models.params.client.TagAttribute;
+import org.adligo.models.params.client.TagInfo;
 
 public class Templates {
   public static final String CANNOT_ACCESS_FILE = "Cannot access file ";
@@ -56,7 +65,7 @@ public class Templates {
   private List<String> templateNames = new ArrayList<String>();
   private HashMap<String,Template> templates = new HashMap<String,Template>();
   private boolean parsed = false; 
-  
+
   /**
    * Default Constructor
    */
@@ -99,7 +108,7 @@ public class Templates {
       try {
         File inputFile = new File(sFileName);
         FileReader in = new FileReader(inputFile);
-        char c[] = new char[(char)inputFile.length()];
+        char c[] = new char[(int)inputFile.length()];
         in.read(c);
         content = new String(c);
         in.close();
@@ -158,19 +167,32 @@ public class Templates {
         InputStream is = r.openStream();
         StringBuffer str = new StringBuffer();
         byte b[] = new byte[1];
-
-        while ( is.read(b) != -1 ) {
-        	while ( is.read(b) != -1 ) {
-        		//strip line feeds 
-            	if (b[0] == '\n') {
-            		str.append(lineFeed);
-            	} else if (b[0] != '\r') {
-            		str.append(new String(b));
-            	}
-            }
+        int counter = 0;
+        while (is.read(b) != -1) {
+        	counter ++;
         }
         is.close();
-        parseContent(new String(str));
+        
+        is = r.openStream();
+        InputStreamReader isr = new InputStreamReader(is);
+        
+        if (log.isDebugEnabled()) {
+        	String encoding = isr.getEncoding();
+        	log.debug("reading content with encoding " + encoding);
+        }
+        CharBuffer cb = CharBuffer.allocate(counter);
+        isr.read(cb);
+        String result = new String(cb.array()).trim();
+        result = new String(result.getBytes(),"UTF-8");
+        isr.close();
+        is.close();
+        if (log.isDebugEnabled()) {
+        	log.debug("read in " + result.length() + " characters characters");
+        	if (log.isTraceEnabled()) {
+        		log.trace(result);
+        	}
+        }
+        parseContent(result);
       } catch (StringIndexOutOfBoundsException e) {
     	  RuntimeException toThrow = new RuntimeException(
     			  THERE_IS_A_BUG_IN_THE_TEMPLATE_PARSER_PLEASE_SEND_YOUR_FILE_TO_SCOTT_ADLIGO_COM);
@@ -192,24 +214,56 @@ public class Templates {
    * [1] is the content of the template
    */
   private void parseContent(String content) {
-    int headerStart,headerEnd,closerStart,closerEnd;
-
-    headerStart = content.indexOf(Tags.TEMPLATE_HEADER);
-    
-    headerEnd = content.indexOf(">", headerStart);
-    String sName = Parser.getAttributeValue(content.substring(headerStart,headerEnd),
-            Tags.NAME);
-
-    closerStart = content.indexOf(Tags.TEMPLATE_ENDER);
-    closerEnd = closerStart + Tags.TEMPLATE_ENDER.length();
-    Template template = new Template(content.substring(headerEnd + 1, closerStart ));
-    //delete the template that was parsed from the content string
-    content = content.substring(closerEnd);
-    templates.put(sName, template);
-    templateNames.add(sName);
-    if (content.indexOf(Tags.TEMPLATE_HEADER) != -1) {
-      parseContent(content); // recursion
-    }
+	content = Parser.stripComments(content);
+	TagInfo info = Parser.getNextTagInfo(content, 0);
+	String templatesTagName = info.getTagName();
+	if (Tags.XML_TAG_NAME.equals(templatesTagName)) {
+		info = Parser.getNextTagInfo(content, info.getHeaderEnd());
+		
+	}
+	templatesTagName = info.getTagName();
+	
+	if (!Tags.TEMPLATES_TAG_NAME.equals(templatesTagName)) {
+		throw new IllegalArgumentException("Was Not able to identify the templates tag ");
+	}
+	info = Parser.getNextTagInfo(content, info.getHeaderEnd());
+	while (info != null) {
+		if (log.isDebugEnabled()) {
+			String header = content.substring(info.getHeaderStart(), info.getHeaderEnd());
+			log.debug("parsing tag with header " + header);
+		}
+		String tagName = info.getTagName();
+		if (Tags.TEMPLATE_TAG_NAME.equals(tagName)) {
+			if (info.hasEnder()) {
+				String templateText = content.substring(info.getHeaderEnd() + 1, info.getEnderStart());
+				Template template = new Template(templateText);
+			    //delete the template that was parsed from the content string
+				String name = "";
+				I_Iterator it = Parser.getAttributes(info, content);
+				while (it.hasNext()) {
+					TagAttribute ta = (TagAttribute) it.next();
+					String sName = ta.getName();
+					if (Tags.NAME.equals(sName)) {
+						name = ta.getValue();
+					}
+				}
+				if (!StringUtils.isEmpty(name)) {
+					templateNames.add(name);
+					templates.put(name, template);
+				}
+			}
+		} 
+		if (info.hasEnder()) {
+			Integer end = info.getEnderEnd();
+			if (end == null) {
+				info = null;
+			} else { 
+				info = Parser.getNextTagInfo(content, end);
+			}
+		} else {
+			info = Parser.getNextTagInfo(content, info.getHeaderEnd());
+		}
+	}
   }
 
   /**

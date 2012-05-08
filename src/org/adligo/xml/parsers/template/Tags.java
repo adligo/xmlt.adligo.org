@@ -9,7 +9,13 @@ package org.adligo.xml.parsers.template;
 
 public class Tags {
   private Tags() {}
+  
   //Tags
+  public static final String XML_TAG_NAME = new String("?xml");
+  public static final String ENCODING_ATTRIBUTE_NAME = new String("encoding");
+  
+  public static final String TEMPLATES_TAG_NAME = new String("templates");
+  public static final String TEMPLATE_TAG_NAME = new String("template");
   public static final String TEMPLATE_HEADER = new String("<template ");
   public static final String TEMPLATE_ENDER = new String("</template>");
   public static final String PARAM_HEADER = new String("<param ");
