@@ -165,7 +165,6 @@ public class Templates {
         	 throw toThrow;
         }
         InputStream is = r.openStream();
-        StringBuffer str = new StringBuffer();
         byte b[] = new byte[1];
         int counter = 0;
         while (is.read(b) != -1) {
