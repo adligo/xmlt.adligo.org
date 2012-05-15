@@ -229,7 +229,7 @@ public class Templates {
 	while (info != null) {
 		if (log.isDebugEnabled()) {
 			String header = content.substring(info.getHeaderStart(), info.getHeaderEnd());
-			log.debug("parsing tag with header " + header);
+			log.debug("parsing tag " + info + " with header " + header);
 		}
 		String tagName = info.getTagName();
 		if (Tags.TEMPLATE_TAG_NAME.equals(tagName)) {
