@@ -1,5 +1,7 @@
 package org.adligo.xml.parsers.template.jdbc;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Date;
@@ -41,6 +43,11 @@ public class JdbcPopulator {
 					case ValueTypes.BOOLEAN:
 						stmt.setBoolean(i, (Boolean) value); 
 						break;
+					case ValueTypes.BIG_DECIMAL:
+						stmt.setBigDecimal(i, (BigDecimal) value); 
+						break;
+					case ValueTypes.BIG_INTEGER:
+						throw new IllegalArgumentException("jdbc does not support BigIntegers!");
 					default:
 						throw new SQLException("Unknown type " + type +
 								" for paramter " + i + " value = " + value);
