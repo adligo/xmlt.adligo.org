@@ -23,6 +23,8 @@ public class BaseSqlOperators {
 		toRet.add(SqlOperators.NOT_EQUALS);
 		toRet.add(SqlOperators.IS_NULL);
 		toRet.add(SqlOperators.IS_NOT_NULL);
+		toRet.add(SqlOperators.ASCENDING);
+		toRet.add(SqlOperators.DESCENDING);
 		return Collections.unmodifiableSet(toRet);
 	}
 }

@@ -47,7 +47,11 @@ public class PrettyParamDecorator extends ParamDecorator {
 	@Override
 	public I_TemplateParams getNestedParams() {
 		// TODO Auto-generated method stub
-		return new PrettyParamDecorator(super.getNestedParams());
+		I_TemplateParams itp = super.getNestedParams();
+		if (itp == null) {
+			return null;
+		}
+		return new PrettyParamDecorator(itp);
 	}
 
 	public I_PrettyQuery getPrettyQuery() {
