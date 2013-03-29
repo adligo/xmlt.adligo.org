@@ -214,11 +214,20 @@ public class Templates {
    */
   private void parseContent(String content) {
 	content = Parser.stripComments(content);
+	if (log.isDebugEnabled()) {
+		String debugSearchString = "<>";
+		if (content.contains(debugSearchString)) {
+			log.debug("found string " + debugSearchString + " for break point");
+		}
+	}
 	TagInfo info = Parser.getNextTagInfo(content, 0);
 	String templatesTagName = info.getTagName();
 	if (Tags.XML_TAG_NAME.equals(templatesTagName)) {
 		info = Parser.getNextTagInfo(content, info.getHeaderEnd());
 		
+	}
+	if (info == null) {
+		throw new IllegalArgumentException("Was Not able to identify the templates tag ");
 	}
 	templatesTagName = info.getTagName();
 	
@@ -270,7 +279,11 @@ public class Templates {
    * name was pased in.
    */
   public Template getTemplate(String sName) {
-    return (Template) templates.get(sName);
+	  Template toRet = templates.get(sName);
+	  if (toRet == null) {
+		  throw new IllegalArgumentException("No template found with name '" + sName + "'");
+	  }
+	  return toRet;
   }
 
   public String getTemplateAsString(String sName) {
