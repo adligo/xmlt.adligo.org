@@ -3,6 +3,7 @@ package org.adligo.xml.parsers.template.jdbc;
 import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
 import org.adligo.i.util.client.ArrayCollection;
+import org.adligo.models.params.client.ValueType;
 
 /**
  * this class simply flattens out all the parameters from the 
@@ -21,7 +22,7 @@ public class QueryParameterAggregator {
 	private ArrayCollection allValues = new ArrayCollection();
 	private ArrayCollection allValueTypes = new ArrayCollection();
 	
-	public void addValue(short type, Object o) {
+	public void addValue(ValueType type, Object o) {
 		if (log.isDebugEnabled()) {
 			log.debug("adding value " + type + "," + o);
 		}
@@ -33,8 +34,8 @@ public class QueryParameterAggregator {
 		return allValues.get(i);
 	}
 	
-	public short getType(int i) {
-		return (Short) allValueTypes.get(i);
+	public ValueType getType(int i) {
+		return (ValueType) allValueTypes.get(i);
 	}
 	
 	public int size() {

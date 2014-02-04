@@ -8,6 +8,7 @@ import java.util.Date;
 
 import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
+import org.adligo.models.params.client.ValueType;
 import org.adligo.models.params.client.ValueTypes;
 
 public class JdbcPopulator {
@@ -16,37 +17,38 @@ public class JdbcPopulator {
 	public static void setJdbcQuestionMarks(QueryParameterAggregator agg,PreparedStatement stmt) throws SQLException {
 		for (int i = 1; i <= agg.size(); i++) {
 			Object value = agg.getValue(i -1 );
-			short type = (Short) agg.getType(i -1);
+			ValueType vt = agg.getType(i - 1);
+			short type = vt.getId();
 			try {
 				switch (type) {
-					case ValueTypes.STRING:
+					case ValueTypes.STRING_ID:
 						stmt.setString(i, (String) value); 
 						break;
-					case ValueTypes.INTEGER:
+					case ValueTypes.INTEGER_ID:
 						stmt.setInt(i, (Integer) value); 
 						break;
-					case ValueTypes.DOUBLE:
+					case ValueTypes.DOUBLE_ID:
 						stmt.setDouble(i, (Double) value); 
 						break;
-					case ValueTypes.LONG:
+					case ValueTypes.LONG_ID:
 						stmt.setLong(i, (Long) value); 
 						break;
-					case ValueTypes.SHORT:
+					case ValueTypes.SHORT_ID:
 						stmt.setShort(i, (Short) value); 
 						break;
-					case ValueTypes.FLOAT:
+					case ValueTypes.FLOAT_ID:
 						stmt.setFloat(i, (Float) value); 
 						break;
-					case ValueTypes.DATE:
+					case ValueTypes.DATE_ID:
 						stmt.setDate(i, new java.sql.Date(((Date) value).getTime())); 
 						break;
-					case ValueTypes.BOOLEAN:
+					case ValueTypes.BOOLEAN_ID:
 						stmt.setBoolean(i, (Boolean) value); 
 						break;
-					case ValueTypes.BIG_DECIMAL:
-						stmt.setBigDecimal(i, (BigDecimal) value); 
+					case ValueTypes.BIG_DECIMAL_ID:
+						stmt.setBigDecimal(i, new BigDecimal((String) value)); 
 						break;
-					case ValueTypes.BIG_INTEGER:
+					case ValueTypes.BIG_INTEGER_ID:
 						throw new IllegalArgumentException("jdbc does not support BigIntegers!");
 					default:
 						throw new SQLException("Unknown type " + type +

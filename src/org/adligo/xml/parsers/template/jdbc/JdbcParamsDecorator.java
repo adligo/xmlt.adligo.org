@@ -11,6 +11,7 @@ import org.adligo.i.log.client.LogFactory;
 import org.adligo.models.params.client.I_Operators;
 import org.adligo.models.params.client.I_TemplateParams;
 import org.adligo.models.params.client.ParamDecorator;
+import org.adligo.models.params.client.ValueType;
 
 /**
  * this simply replaces all the dynamic parameter values with 
@@ -52,7 +53,7 @@ public class JdbcParamsDecorator extends ParamDecorator implements I_TemplatePar
 	@Override
 	public Object[] getValues() {
 		Object [] vals =  super.getValues();
-		short [] types = super.getValueTypes();
+		ValueType [] types = super.getValueTypes();
 		Object [] toRet = new Object[vals.length];
 		for (int i = 0; i < toRet.length; i++) {
 			aggregator.addValue(types[i], vals[i]);
