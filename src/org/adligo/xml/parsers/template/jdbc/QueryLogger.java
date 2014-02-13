@@ -1,8 +1,8 @@
 package org.adligo.xml.parsers.template.jdbc;
 
-import org.adligo.i.log.client.Log;
-import org.adligo.i.log.client.LogFactory;
-import org.adligo.models.params.client.I_TemplateParams;
+import org.adligo.i.log.shared.Log;
+import org.adligo.i.log.shared.LogFactory;
+import org.adligo.models.params.shared.I_TemplateParams;
 import org.adligo.xml.parsers.template.EngineInput;
 import org.adligo.xml.parsers.template.Template;
 import org.adligo.xml.parsers.template.TemplateParserEngine;

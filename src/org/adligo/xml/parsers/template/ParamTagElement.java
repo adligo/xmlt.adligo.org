@@ -12,9 +12,9 @@ package org.adligo.xml.parsers.template;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.adligo.i.log.client.Log;
-import org.adligo.i.log.client.LogFactory;
-import org.adligo.models.params.client.Parser;
+import org.adligo.i.log.shared.Log;
+import org.adligo.i.log.shared.LogFactory;
+import org.adligo.models.params.shared.Parser;
 
 public class ParamTagElement extends TemplateElement {
     private static Log log = LogFactory.getLog(ParamTagElement.class);

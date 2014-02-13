@@ -1,6 +1,6 @@
 package org.adligo.xml.parsers.template;
 
-import org.adligo.models.params.client.I_TemplateParams;
+import org.adligo.models.params.shared.I_TemplateParams;
 
 public class EngineInput {
 	private Template template;

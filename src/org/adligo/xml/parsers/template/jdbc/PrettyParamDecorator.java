@@ -2,8 +2,8 @@ package org.adligo.xml.parsers.template.jdbc;
 
 import java.util.Date;
 
-import org.adligo.models.params.client.I_TemplateParams;
-import org.adligo.models.params.client.ParamDecorator;
+import org.adligo.models.params.shared.I_TemplateParams;
+import org.adligo.models.params.shared.ParamDecorator;
 
 /**
  * this class is to provide the developer

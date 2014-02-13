@@ -1,6 +1,6 @@
 package org.adligo.xml.parsers.template;
 
-import org.adligo.models.params.client.I_TemplateParams;
+import org.adligo.models.params.shared.I_TemplateParams;
 
 /**
  * the idea behind this class is that it will

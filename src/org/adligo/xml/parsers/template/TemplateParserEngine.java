@@ -12,11 +12,11 @@ package org.adligo.xml.parsers.template;
  * @author       scott@adligo.com
  * @version 1.3
  */
-import org.adligo.i.log.client.Log;
-import org.adligo.i.log.client.LogFactory;
+import org.adligo.i.log.shared.Log;
+import org.adligo.i.log.shared.LogFactory;
 import org.adligo.jse.util.JSECommonInit;
-import org.adligo.models.params.client.I_Operators;
-import org.adligo.models.params.client.I_TemplateParams;
+import org.adligo.models.params.shared.I_Operators;
+import org.adligo.models.params.shared.I_TemplateParams;
 
 
 public class TemplateParserEngine {

@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Iterator;
 
-import org.adligo.models.params.client.Param;
+import org.adligo.models.params.shared.Param;
 import org.adligo.xml.parsers.template.Template;
 import org.adligo.xml.parsers.template.Templates;
 

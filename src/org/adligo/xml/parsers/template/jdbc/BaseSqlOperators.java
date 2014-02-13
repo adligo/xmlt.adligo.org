@@ -4,8 +4,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.adligo.models.params.client.I_Operators;
-import org.adligo.models.params.client.SqlOperators;
+import org.adligo.models.params.shared.I_Operators;
+import org.adligo.models.params.shared.SqlOperators;
 
 public class BaseSqlOperators {
 	public static final Set<I_Operators> OPERATORS = getAllOperators();

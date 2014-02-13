@@ -6,10 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Date;
 
-import org.adligo.i.log.client.Log;
-import org.adligo.i.log.client.LogFactory;
-import org.adligo.models.params.client.ValueType;
-import org.adligo.models.params.client.ValueTypes;
+import org.adligo.i.log.shared.Log;
+import org.adligo.i.log.shared.LogFactory;
+import org.adligo.models.params.shared.ValueType;
+import org.adligo.models.params.shared.ValueTypes;
 
 public class JdbcPopulator {
 	private static final Log log = LogFactory.getLog(JdbcPopulator.class);

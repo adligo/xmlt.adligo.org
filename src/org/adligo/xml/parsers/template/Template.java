@@ -9,9 +9,9 @@ package org.adligo.xml.parsers.template;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.adligo.i.log.client.Log;
-import org.adligo.i.log.client.LogFactory;
-import org.adligo.models.params.client.Parser;
+import org.adligo.i.log.shared.Log;
+import org.adligo.i.log.shared.LogFactory;
+import org.adligo.models.params.shared.Parser;
 
 /**
  * immutable (so the instance may be shared by multiple threads) 

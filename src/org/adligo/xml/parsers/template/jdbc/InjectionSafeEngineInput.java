@@ -3,7 +3,7 @@ package org.adligo.xml.parsers.template.jdbc;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.adligo.models.params.client.I_Operators;
+import org.adligo.models.params.shared.I_Operators;
 import org.adligo.xml.parsers.template.EngineInput;
 
 /**

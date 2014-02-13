@@ -1,9 +1,9 @@
 package org.adligo.xml.parsers.template.jdbc;
 
-import org.adligo.i.log.client.Log;
-import org.adligo.i.log.client.LogFactory;
-import org.adligo.i.util.client.ArrayCollection;
-import org.adligo.models.params.client.ValueType;
+import org.adligo.i.log.shared.Log;
+import org.adligo.i.log.shared.LogFactory;
+import org.adligo.i.util.shared.ArrayCollection;
+import org.adligo.models.params.shared.ValueType;
 
 /**
  * this class simply flattens out all the parameters from the 

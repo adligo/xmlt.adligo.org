@@ -46,14 +46,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.adligo.i.log.client.Log;
-import org.adligo.i.log.client.LogFactory;
-import org.adligo.i.util.client.I_Iterator;
-import org.adligo.i.util.client.StringUtils;
-import org.adligo.models.params.client.I_XMLBuilder;
-import org.adligo.models.params.client.Parser;
-import org.adligo.models.params.client.TagAttribute;
-import org.adligo.models.params.client.TagInfo;
+import org.adligo.i.log.shared.Log;
+import org.adligo.i.log.shared.LogFactory;
+import org.adligo.i.util.shared.I_Iterator;
+import org.adligo.i.util.shared.StringUtils;
+import org.adligo.models.params.shared.I_XMLBuilder;
+import org.adligo.models.params.shared.Parser;
+import org.adligo.models.params.shared.TagAttribute;
+import org.adligo.models.params.shared.TagInfo;
 
 public class Templates {
   public static final String CANNOT_ACCESS_FILE = "Cannot access file ";

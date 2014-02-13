@@ -6,12 +6,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.adligo.i.log.client.Log;
-import org.adligo.i.log.client.LogFactory;
-import org.adligo.models.params.client.I_Operators;
-import org.adligo.models.params.client.I_TemplateParams;
-import org.adligo.models.params.client.ParamDecorator;
-import org.adligo.models.params.client.ValueType;
+import org.adligo.i.log.shared.Log;
+import org.adligo.i.log.shared.LogFactory;
+import org.adligo.models.params.shared.I_Operators;
+import org.adligo.models.params.shared.I_TemplateParams;
+import org.adligo.models.params.shared.ParamDecorator;
+import org.adligo.models.params.shared.ValueType;
 
 /**
  * this simply replaces all the dynamic parameter values with 

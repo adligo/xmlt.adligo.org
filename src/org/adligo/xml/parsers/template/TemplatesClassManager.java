@@ -3,7 +3,7 @@ package org.adligo.xml.parsers.template;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.adligo.models.params.client.I_TemplateParams;
+import org.adligo.models.params.shared.I_TemplateParams;
 
 /**
  * this manages a single templates files class lookups

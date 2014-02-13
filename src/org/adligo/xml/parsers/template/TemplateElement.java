@@ -1,6 +1,6 @@
 package org.adligo.xml.parsers.template;
 
-import org.adligo.models.params.client.Parser;
+import org.adligo.models.params.shared.Parser;
 
 /**
  * a immutable class that represents freform text inside of the xml
